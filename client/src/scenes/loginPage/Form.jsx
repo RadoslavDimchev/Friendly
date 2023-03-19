@@ -13,6 +13,7 @@ import { useState } from "react";
 import Dropzone from "react-dropzone";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setLogin } from "state";
 import * as yup from "yup";
 
 const registerSchema = yup.object().shape({
@@ -41,13 +42,8 @@ const initialValuesRegister = {
 };
 
 const initialValuesLogin = {
-  firstName: "",
-  lastName: "",
   email: "",
   password: "",
-  location: "",
-  occupation: "",
-  picture: "",
 };
 
 const Form = () => {
@@ -58,6 +54,49 @@ const Form = () => {
   const isNonMobile = useMediaQuery("(min-width:600px)");
   const isLogin = pageType === "login";
   const isRegister = pageType === "register";
+
+  const register = async (values, onSubmitProps) => {
+    // this allows to send form info with image
+    const formData = new FormData();
+    for (const value in values) {
+      formData.append(value, values[value]);
+    }
+    formData.append("picturePath", values.picture.name);
+
+    const savedUserResponse = await fetch(
+      "http://localhost:3001/auth/register",
+      {
+        method: "POST",
+        body: formData,
+      }
+    );
+
+    const savedUser = await savedUserResponse.json();
+    onSubmitProps.resetForm();
+    if (savedUser) {
+      setPageType("login");
+    }
+  };
+
+  const login = async (values, onSubmitProps) => {
+    const loggedInResponse = await fetch("http://localhost:3001/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(values),
+    });
+    const loggedIn = await loggedInResponse.json();
+
+    onSubmitProps.resetForm();
+    if (loggedIn) {
+      dispatch(
+        setLogin({
+          user: loggedIn.user,
+          token: loggedIn.token,
+        })
+      );
+      navigate("/home");
+    }
+  };
 
   const handleFormSubmit = async (values, onSubmitProps) => {
     if (isLogin) {
@@ -152,7 +191,7 @@ const Form = () => {
                       setFieldValue("picture", acceptedFiles[0]);
                     }}
                   >
-                    {({ getRootProps, getInputProps }) => {
+                    {({ getRootProps, getInputProps }) => (
                       <Box
                         {...getRootProps()}
                         border={`2px dashed ${palette.primary.main}`}
@@ -168,8 +207,8 @@ const Form = () => {
                             <EditOutlinedIcon />
                           </FlexBetween>
                         )}
-                      </Box>;
-                    }}
+                      </Box>
+                    )}
                   </Dropzone>
                 </Box>
               </>
