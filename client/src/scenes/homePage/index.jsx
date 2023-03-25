@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import AdvertWidget from "scenes/widgets/AdvertWidget";
 import MyPostWidget from "scenes/widgets/MyPostWidget";
 import PostsWidget from "scenes/widgets/PostsWidget";
+import ScrollToTopButton from "./ScrollToTopButton";
 
 const HomePage = () => {
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
@@ -34,6 +35,8 @@ const HomePage = () => {
           {/* <FriendListWidget userId={_id} /> */}
         </Box>
       )}
+
+      <ScrollToTopButton />
     </Box>
   );
 };
