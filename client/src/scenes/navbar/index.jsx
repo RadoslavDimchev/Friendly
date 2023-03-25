@@ -1,24 +1,17 @@
 import { useState } from "react";
-import {
-  IconButton,
-  InputBase,
-  Typography,
-  useTheme,
-  useMediaQuery,
-} from "@mui/material";
-import { Search, Menu } from "@mui/icons-material";
+import { IconButton, Typography, useTheme, useMediaQuery } from "@mui/material";
+import { Menu } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
 import DesktopNav from "./DesktopNav";
 import MobileNav from "./MobileNav";
+import SearchBar from "./SearchBar";
 
 const Navbar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
   const navigate = useNavigate();
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
-
   const theme = useTheme();
-  const neutralLight = theme.palette.neutral.light;
   const primaryLight = theme.palette.primary.light;
   const alt = theme.palette.background.alt;
 
@@ -41,19 +34,9 @@ const Navbar = () => {
         >
           Friendly
         </Typography>
-        {isNonMobileScreens && (
-          <FlexBetween
-            backgroundColor={neutralLight}
-            borderRadius="9px"
-            gap="3rem"
-            padding="0.1rem 1.5rem"
-          >
-            <InputBase placeholder="Search..." />
-            <IconButton>
-              <Search />
-            </IconButton>
-          </FlexBetween>
-        )}
+
+        {/* SEARCH */}
+        {isNonMobileScreens && <SearchBar />}
       </FlexBetween>
 
       {/* DESKTOP NAV */}
