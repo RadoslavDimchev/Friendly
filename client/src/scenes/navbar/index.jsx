@@ -22,16 +22,25 @@ import {
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { setMode, setLogout } from "state";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
+import menuItems from "./menuItems";
 
 const Navbar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const user = useSelector((state) => state.user);
-  const token = useSelector((state) => state.token);
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
+  const isAuth = Boolean(useSelector((state) => state.token));
+  const fullName = `${user?.firstName} ${user?.lastName}`;
+  const { pathname } = useLocation();
+
+  const selectMenuValue = isAuth
+    ? fullName
+    : pathname === "/login"
+    ? "Login"
+    : "Register";
 
   const theme = useTheme();
   const neutralLight = theme.palette.neutral.light;
@@ -39,8 +48,6 @@ const Navbar = () => {
   const background = theme.palette.background.default;
   const primaryLight = theme.palette.primary.light;
   const alt = theme.palette.background.alt;
-
-  const fullName = `${user?.firstName} ${user?.lastName}`;
 
   return (
     <FlexBetween padding="1rem 6%" backgroundColor={alt}>
@@ -87,64 +94,37 @@ const Navbar = () => {
           <Message sx={{ fontSize: "25px" }} />
           <Notifications sx={{ fontSize: "25px" }} />
           <Help sx={{ fontSize: "25px" }} />
-          {token ? (
-            <FormControl variant="standard" value={fullName}>
-              <Select
-                value={fullName}
-                sx={{
+          <FormControl variant="standard" value={selectMenuValue}>
+            <Select
+              value={selectMenuValue}
+              sx={{
+                backgroundColor: neutralLight,
+                width: "150px",
+                borderRadius: "0.25rem",
+                p: "0.25rem 1rem",
+                "& .MuiSvgIcon-root": {
+                  pr: "0.25rem",
+                  width: "3rem",
+                },
+                "& .MuiSelect-select:focus": {
                   backgroundColor: neutralLight,
-                  width: "150px",
-                  borderRadius: "0.25rem",
-                  p: "0.25rem 1rem",
-                  "& .MuiSvgIcon-root": {
-                    pr: "0.25rem",
-                    width: "3rem",
-                  },
-                  "& .MuiSelect-select:focus": {
-                    backgroundColor: neutralLight,
-                  },
-                }}
-                input={<InputBase />}
-              >
-                <MenuItem value={fullName}>
-                  <Typography>{fullName}</Typography>
-                </MenuItem>
-                <MenuItem onClick={() => dispatch(setLogout())}>
-                  Log Out
-                </MenuItem>
-              </Select>
-            </FormControl>
-          ) : (
-            <FormControl variant="standard" value="Login">
-              <Select
-                value="Login"
-                sx={{
-                  backgroundColor: neutralLight,
-                  width: "150px",
-                  borderRadius: "0.25rem",
-                  p: "0.25rem 1rem",
-                  "& .MuiSvgIcon-root": {
-                    pr: "0.25rem",
-                    width: "3rem",
-                  },
-                  "& .MuiSelect-select:focus": {
-                    backgroundColor: neutralLight,
-                  },
-                }}
-                input={<InputBase />}
-              >
-                <MenuItem value="Login" onClick={() => navigate("/login")}>
-                  Login
-                </MenuItem>
+                },
+              }}
+              input={<InputBase />}
+            >
+              {menuItems(isAuth, fullName, navigate, () =>
+                dispatch(setLogout())
+              ).map((item) => (
                 <MenuItem
-                  value="Register"
-                  onClick={() => navigate("/register")}
+                  key={item.value}
+                  value={item.value}
+                  onClick={item.onClick}
                 >
-                  Register
+                  {item.label}
                 </MenuItem>
-              </Select>
-            </FormControl>
-          )}
+              ))}
+            </Select>
+          </FormControl>
         </FlexBetween>
       ) : (
         <IconButton
