@@ -1,10 +1,8 @@
 import { useTheme } from "@emotion/react";
-import { Close, Help, Message, Notifications } from "@mui/icons-material";
+import { Close } from "@mui/icons-material";
 import { Box, IconButton } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
-import LightDarkMode from "./LightDarkMode";
-import NavIconsLinks from "./NavIconsLinks";
-import SelectMenu from "./SelectMenu";
+import NavSubComponents from "./navSubcomponents";
 
 const MobileNav = ({ onToggleMobileMenu }) => {
   const theme = useTheme();
@@ -20,14 +18,12 @@ const MobileNav = ({ onToggleMobileMenu }) => {
       minWidth="300px"
       backgroundColor={theme.palette.background.default}
     >
-      {/* CLOSE ICON */}
       <Box display="flex" justifyContent="flex-end" p="1rem">
         <IconButton onClick={onToggleMobileMenu}>
           <Close />
         </IconButton>
       </Box>
 
-      {/* MENU ITEMS */}
       <FlexBetween
         display="flex"
         flexDirection="column"
@@ -35,9 +31,7 @@ const MobileNav = ({ onToggleMobileMenu }) => {
         alignItems="center"
         gap="3rem"
       >
-        <LightDarkMode />
-        <NavIconsLinks />
-        <SelectMenu />
+        <NavSubComponents />
       </FlexBetween>
     </Box>
   );

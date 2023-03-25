@@ -3,14 +3,15 @@ import { IconButton, Typography, useTheme, useMediaQuery } from "@mui/material";
 import { Menu } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import FlexBetween from "components/FlexBetween";
-import DesktopNav from "./DesktopNav";
 import MobileNav from "./MobileNav";
 import SearchBar from "./SearchBar";
+import NavSubComponents from "./navSubcomponents";
 
 const Navbar = () => {
   const [isMobileMenuToggled, setIsMobileMenuToggled] = useState(false);
-  const navigate = useNavigate();
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
+  const navigate = useNavigate();
+
   const theme = useTheme();
   const primaryLight = theme.palette.primary.light;
   const alt = theme.palette.background.alt;
@@ -41,7 +42,9 @@ const Navbar = () => {
 
       {/* DESKTOP NAV */}
       {isNonMobileScreens ? (
-        <DesktopNav />
+        <FlexBetween gap="2rem">
+          <NavSubComponents />
+        </FlexBetween>
       ) : (
         <IconButton onClick={onToggleMobileMenu}>
           <Menu />

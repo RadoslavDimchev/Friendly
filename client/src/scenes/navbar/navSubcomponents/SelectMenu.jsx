@@ -6,11 +6,11 @@ import { setLogout } from "state";
 import menuItems from "./menuItems";
 
 const SelectMenu = () => {
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
   const isAuth = Boolean(useSelector((state) => state.token));
   const user = useSelector((state) => state.user);
   const fullName = `${user?.firstName} ${user?.lastName}`;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { pathname } = useLocation();
 
   const theme = useTheme();
