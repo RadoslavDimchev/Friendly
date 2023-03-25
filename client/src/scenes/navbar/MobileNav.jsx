@@ -3,6 +3,7 @@ import { Close, Help, Message, Notifications } from "@mui/icons-material";
 import { Box, IconButton } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
 import LightDarkMode from "./LightDarkMode";
+import NavIconsLinks from "./NavIconsLinks";
 import SelectMenu from "./SelectMenu";
 
 const MobileNav = ({ onToggleMobileMenu }) => {
@@ -35,9 +36,7 @@ const MobileNav = ({ onToggleMobileMenu }) => {
         gap="3rem"
       >
         <LightDarkMode />
-        <Message sx={{ fontSize: "25px" }} />
-        <Notifications sx={{ fontSize: "25px" }} />
-        <Help sx={{ fontSize: "25px" }} />
+        <NavIconsLinks />
         <SelectMenu />
       </FlexBetween>
     </Box>
