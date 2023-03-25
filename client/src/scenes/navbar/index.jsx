@@ -19,7 +19,14 @@ const Navbar = () => {
   const onToggleMobileMenu = () => setIsMobileMenuToggled((state) => !state);
 
   return (
-    <FlexBetween padding="1rem 6%" backgroundColor={alt}>
+    <FlexBetween
+      padding="1rem 6%"
+      backgroundColor={alt}
+      position="fixed"
+      width="100%"
+      zIndex="999"
+      top={0}
+    >
       <FlexBetween gap="1.75rem">
         <Typography
           fontWeight="bold"

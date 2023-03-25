@@ -1,4 +1,4 @@
-import { CssBaseline, ThemeProvider } from '@mui/material';
+import { Box, CssBaseline, ThemeProvider } from '@mui/material';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
@@ -18,14 +18,16 @@ function App() {
     <div className="app">
       <BrowserRouter>
         <ThemeProvider theme={theme} >
-          <Navbar />
           <CssBaseline />
-          <Routes>
-            <Route path='/' element={isAuth ? <HomePage /> : <Navigate to="/login" />} />
-            <Route path='/profile/:userId' element={isAuth ? <ProfilePage /> : <Navigate to="/login" />} />
-            <Route path='/login' element={<AuthPage />} />
-            <Route path='/register' element={<AuthPage />} />
-          </Routes>
+          <Navbar />
+          <Box mt="5rem" >
+            <Routes>
+              <Route path='/' element={isAuth ? <HomePage /> : <Navigate to="/login" />} />
+              <Route path='/profile/:userId' element={isAuth ? <ProfilePage /> : <Navigate to="/login" />} />
+              <Route path='/login' element={<AuthPage />} />
+              <Route path='/register' element={<AuthPage />} />
+            </Routes>
+          </Box>
         </ThemeProvider>
       </BrowserRouter>
     </div>
