@@ -12,7 +12,7 @@ import { Formik } from "formik";
 import { useState } from "react";
 import Dropzone from "react-dropzone";
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { setLogin } from "state";
 import * as yup from "yup";
 
@@ -47,13 +47,13 @@ const initialValuesLogin = {
 };
 
 const Form = () => {
-  const [pageType, setPageType] = useState("login");
   const { palette } = useTheme();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isNonMobile = useMediaQuery("(min-width:600px)");
-  const isLogin = pageType === "login";
-  const isRegister = pageType === "register";
+  const { pathname } = useLocation();
+  const isLogin = pathname === "/login";
+  const isRegister = pathname === "/register";
 
   const register = async (values, onSubmitProps) => {
     // this allows to send form info with image
@@ -74,7 +74,7 @@ const Form = () => {
     const savedUser = await savedUserResponse.json();
     onSubmitProps.resetForm();
     if (savedUser) {
-      setPageType("login");
+      navigate("/login");
     }
   };
 
@@ -254,7 +254,7 @@ const Form = () => {
             </Button>
             <Typography
               onClick={() => {
-                setPageType(isLogin ? "register" : "login");
+                navigate(isLogin ? "/register" : "/login");
                 resetForm();
               }}
               sx={{
