@@ -3,7 +3,7 @@ import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import HomePage from 'scenes/homePage';
-import LoginPage from 'scenes/loginPage';
+import AuthPage from 'scenes/authPage';
 import ProfilePage from 'scenes/profilePage';
 import { createTheme } from '@mui/material/styles';
 import { themeSettings } from 'theme';
@@ -21,10 +21,10 @@ function App() {
           <Navbar />
           <CssBaseline />
           <Routes>
-            <Route path='/home' element={isAuth ? <HomePage /> : <Navigate to="/login" />} />
+            <Route path='/' element={isAuth ? <HomePage /> : <Navigate to="/login" />} />
             <Route path='/profile/:userId' element={isAuth ? <ProfilePage /> : <Navigate to="/login" />} />
-            <Route path='/login' element={<LoginPage />} />
-            <Route path='/register' element={<LoginPage />} />
+            <Route path='/login' element={<AuthPage />} />
+            <Route path='/register' element={<AuthPage />} />
           </Routes>
         </ThemeProvider>
       </BrowserRouter>

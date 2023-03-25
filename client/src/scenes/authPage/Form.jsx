@@ -9,7 +9,6 @@ import {
 } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
 import { Formik } from "formik";
-import { useState } from "react";
 import Dropzone from "react-dropzone";
 import { useDispatch } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -65,7 +64,7 @@ const Form = () => {
           token: loggedIn.token,
         })
       );
-      navigate("/home");
+      navigate("/");
     }
   };
 
