@@ -12,7 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "state";
 import { Typography, IconButton, Box, Divider } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const PostWidget = ({
   postId,
@@ -35,6 +35,7 @@ const PostWidget = ({
 
   const { palette } = useTheme();
   const main = palette.neutral.main;
+  const primary = palette.primary.main;
 
   const patchLike = async () => {
     if (!isAuth) {
@@ -62,7 +63,13 @@ const PostWidget = ({
         userPicturePath={userPicturePath}
       />
       <Typography color={main} sx={{ mt: "1rem" }}>
-        {description}
+        {description.split(" ").slice(0, 10).join(" ")}
+        <Link
+          to={`/post/${postId}`}
+          style={{ color: primary, marginLeft: "0.3rem" }}
+        >
+          view details...
+        </Link>
       </Typography>
       {picturePath && (
         <img
@@ -78,7 +85,7 @@ const PostWidget = ({
           <FlexBetween gap="0.3rem">
             <IconButton onClick={patchLike}>
               {isAuth && Boolean(likes[user._id]) ? (
-                <FavoriteOutlined sx={{ color: palette.primary.main }} />
+                <FavoriteOutlined sx={{ color: primary }} />
               ) : (
                 <FavoriteBorderOutlined />
               )}
