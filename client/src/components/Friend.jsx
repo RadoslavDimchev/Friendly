@@ -12,6 +12,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const token = useSelector((state) => state.token);
   const isAuth = Boolean(token);
   const user = useSelector((state) => state.user);
+  const isOwner = isAuth && user._id === friendId;
 
   const { palette } = useTheme();
   const primaryLight = palette.primary.light;
@@ -27,7 +28,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
     if (!isAuth) {
       return navigate("/login");
     }
-    
+
     const response = await fetch(
       `http://localhost:3001/users/${user._id}/${friendId}`,
       {
@@ -69,16 +70,18 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
           </Typography>
         </Box>
       </FlexBetween>
-      <IconButton
-        onClick={patchFriend}
-        sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
-      >
-        {isFriend ? (
-          <PersonRemoveOutlined sx={{ color: primaryDark }} />
-        ) : (
-          <PersonAddOutlined sx={{ color: primaryDark }} />
-        )}
-      </IconButton>
+      {!isOwner && (
+        <IconButton
+          onClick={patchFriend}
+          sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
+        >
+          {isFriend ? (
+            <PersonRemoveOutlined sx={{ color: primaryDark }} />
+          ) : (
+            <PersonAddOutlined sx={{ color: primaryDark }} />
+          )}
+        </IconButton>
+      )}
     </FlexBetween>
   );
 };

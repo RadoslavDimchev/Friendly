@@ -37,6 +37,10 @@ export const addRemoveFriend = async (req, res) => {
     const user = await User.findById(id);
     const friend = await User.findById(friendId);
 
+    if (id === friendId) {
+      throw new Error('You cannot be friend by youself');
+    }
+
     if (user.friends.includes(friendId)) {
       user.friends = user.friends.filter(fid => fid !== friendId);
       friend.friends = friend.friends.filter(fid => fid !== id);
