@@ -60,9 +60,9 @@ export const getPost = async (req, res) => {
 // UPDATE
 export const likePost = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { postId } = req.params;
     const { userId } = req.body;
-    const post = await Post.findById(id);
+    const post = await Post.findById(postId);
     const isLiked = post.likes.get(userId);
 
     if (isLiked) {
@@ -72,11 +72,22 @@ export const likePost = async (req, res) => {
     }
 
     const updatedPost = await Post.findByIdAndUpdate(
-      id,
+      postId,
       { likes: post.likes },
       { new: true }
     );
 
+    res.status(200).json(updatedPost);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export const editPost = async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const { description, picturePath } = req.body;
+    const updatedPost = await Post.findByIdAndUpdate(postId, { description, picturePath });
     res.status(200).json(updatedPost);
   } catch (error) {
     res.status(404).json({ message: error.message });

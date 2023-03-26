@@ -5,7 +5,8 @@ import {
   getUserPosts,
   likePost,
   getPost,
-  deletePost
+  deletePost,
+  editPost
 } from '../controllers/posts.js';
 
 const router = express.Router();
@@ -16,9 +17,9 @@ router.get('/:userId/posts', getUserPosts);
 router.get('/:postId', getPost);
 
 // UPDATE
-router.patch('/:id/like', verifyToken, likePost);
+router.patch('/:postId/like', verifyToken, likePost);
 
 // DELETE 
-router.delete('/:postId', deletePost);
+router.delete('/:postId', verifyToken, deletePost);
 
 export default router;
