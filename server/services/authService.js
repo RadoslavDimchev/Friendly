@@ -1,8 +1,6 @@
 import User from "../models/User";
 import bcrypt from 'bcrypt';
 
-const tokenBlacklist = new Set();
-
 export async function register(
   firstName,
   lastName,

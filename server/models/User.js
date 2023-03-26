@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const UserSchema = new mongoose.Schema({
+const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
     required: true,
@@ -38,5 +38,13 @@ const UserSchema = new mongoose.Schema({
   impressions: Number,
 }, { timestamps: true });
 
-const User = mongoose.model('User', UserSchema);
+userSchema.index({ email: 1 }, {
+  collation: {
+    locale: 'en',
+    strength: 2
+  },
+  unique: true
+});
+
+const User = mongoose.model('User', userSchema);
 export default User;
