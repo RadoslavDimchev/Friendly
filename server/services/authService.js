@@ -59,13 +59,10 @@ function createToken(user) {
     _id: user._id,
     email: user.email
   };
-  delete user.password;
+  const { password, ...userData } = user;
 
-  const token = {
-    user,
+  return {
+    user: userData,
     token: jwt.sign(payload, process.env.JWT_SECRET)
   };
-  console.log(token);
-
-  return token;
 }

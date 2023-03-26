@@ -23,7 +23,6 @@ export const registerUser = async (req, res) => {
       Math.floor(Math.random() * 10000),
       Math.floor(Math.random() * 10000),
     );
-    console.log(token);
     res.status(200).json(token);
   } catch (error) {
     res.status(500).json({ error: error.message });
