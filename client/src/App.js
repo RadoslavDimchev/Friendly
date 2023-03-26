@@ -21,7 +21,7 @@ function App() {
         <ThemeProvider theme={theme} >
           <CssBaseline />
             <Navbar />
-          <Box p="5rem 6%" >
+          <Box p="5rem 6%" pb="2rem" >
             <Routes>
               <Route path='/' element={<HomePage />} />
               {/* <Route path='/profile/:userId' element={isAuth ? <ProfilePage /> : <Navigate to="/login" />} /> */}
