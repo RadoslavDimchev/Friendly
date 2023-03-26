@@ -4,11 +4,21 @@ import {
   FavoriteBorderOutlined,
   FavoriteOutlined,
   ShareOutlined,
+  Edit,
+  Delete,
 } from "@mui/icons-material";
 import Friend from "components/Friend";
 import WidgetWrapper from "components/WidgetWrapper";
 import { useDispatch, useSelector } from "react-redux";
-import { Typography, IconButton, Box, Divider } from "@mui/material";
+import {
+  Typography,
+  IconButton,
+  Box,
+  Divider,
+  Stack,
+  Grid,
+  useMediaQuery,
+} from "@mui/material";
 import FlexBetween from "components/FlexBetween";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -22,6 +32,8 @@ const DetailsPage = () => {
   const [post, setPost] = useState({});
   const likeCount = Object.keys(post.likes || {}).length;
   const { postId } = useParams();
+  const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
+  const isOwner = isAuth && user._id === post.userId;
 
   const { palette } = useTheme();
   const main = palette.neutral.main;
@@ -61,6 +73,32 @@ const DetailsPage = () => {
 
   return (
     <WidgetWrapper maxWidth="500px" margin="2rem auto">
+      {isOwner && (
+        <Grid
+          container
+          sx={{
+            border: `2px dashed ${main}`,
+            borderRadius: "5px",
+            padding: "4px 8px",
+            marginBottom: "1rem",
+          }}
+        >
+          <Grid item xs={10}>
+            <Typography mt="0.5rem">Author menu</Typography>
+          </Grid>
+          <Grid item xs={1}>
+            <IconButton>
+              <Edit sx={{ color: primary }} />
+            </IconButton>
+          </Grid>
+
+          <Grid item xs={1}>
+            <IconButton>
+              <Delete color="error" />
+            </IconButton>
+          </Grid>
+        </Grid>
+      )}
       <Friend
         friendId={post.userId}
         name={`${post.firstName} ${post.lastName}`}
