@@ -65,7 +65,7 @@ const PostWidget = ({
       <Typography color={main} sx={{ mt: "1rem" }}>
         {description.split(" ").slice(0, 10).join(" ")}
         <Link
-          to={`/post/${postId}`}
+          to={`/posts/${postId}`}
           style={{ color: primary, marginLeft: "0.3rem" }}
         >
           view details...

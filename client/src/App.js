@@ -9,6 +9,7 @@ import { createTheme } from '@mui/material/styles';
 import { themeSettings } from 'theme';
 import Navbar from 'scenes/navbar';
 import DetailsPage from 'scenes/detailsPage';
+import EditPage from 'scenes/editPage';
 
 function App() {
   const mode = useSelector(state => state.mode);
@@ -20,14 +21,15 @@ function App() {
       <BrowserRouter>
         <ThemeProvider theme={theme} >
           <CssBaseline />
-            <Navbar />
+          <Navbar />
           <Box p="5rem 6%" pb="2rem" >
             <Routes>
               <Route path='/' element={<HomePage />} />
               {/* <Route path='/profile/:userId' element={isAuth ? <ProfilePage /> : <Navigate to="/login" />} /> */}
               <Route path='/profile/:userId' element={<ProfilePage />} />
               <Route path='/profile/:userId/friends' element={<ProfilePage />} />
-              <Route path='/post/:postId' element={<DetailsPage />} />
+              <Route path='/posts/:postId' element={<DetailsPage />} />
+              <Route path='/posts/:postId/edit' element={<EditPage />} />
               <Route path='/login' element={<AuthPage />} />
               <Route path='/register' element={<AuthPage />} />
             </Routes>

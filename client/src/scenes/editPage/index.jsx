@@ -1,3 +1,20 @@
+import { useTheme } from "@emotion/react";
+import WidgetWrapper from "components/WidgetWrapper";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  Typography,
+  IconButton,
+  Box,
+  Divider,
+  Button,
+  useMediaQuery,
+  InputBase,
+} from "@mui/material";
+import FlexBetween from "components/FlexBetween";
+import { useNavigate, useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { setPosts } from "state";
+import UserImage from "components/UserImage";
 import {
   EditOutlined,
   DeleteOutlined,
@@ -7,64 +24,65 @@ import {
   MicOutlined,
   MoreHorizOutlined,
 } from "@mui/icons-material";
-import {
-  Box,
-  Divider,
-  IconButton,
-  InputBase,
-  Typography,
-  useMediaQuery,
-  useTheme,
-  Button,
-} from "@mui/material";
-import FlexBetween from "components/FlexBetween";
-import UserImage from "components/UserImage";
-import WidgetWrapper from "components/WidgetWrapper";
-import { useState } from "react";
 import Dropzone from "react-dropzone";
-import { useDispatch, useSelector } from "react-redux";
-import { setPosts } from "state";
 
-const MyPostWidget = () => {
+const EditPage = () => {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { postId } = useParams();
+  const [post, setPost] = useState({});
   const [isImage, setIsImage] = useState(false);
   const [image, setImage] = useState(null);
-  const [post, setPost] = useState("");
-  const { palette } = useTheme();
-  const { _id, picturePath } = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
+  const { _id, picturePath } = useSelector((state) => state.user);
+
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
+  const { palette } = useTheme();
   const mediumMain = palette.neutral.mediumMain;
   const medium = palette.neutral.medium;
 
-  const handlePost = async () => {
+  const getPost = async () => {
+    const response = await fetch(`http://localhost:3001/posts/${postId}`);
+    const data = await response.json();
+    setPost(data);
+    setIsImage(!!data.picturePath);
+    setImage({ name: data.picturePath });
+  };
+
+  useEffect(() => {
+    getPost();
+  }, [postId]);
+
+  const handleEdit = async () => {
     const formData = new FormData();
-    formData.append("userId", _id);
-    formData.append("description", post);
+    formData.append("description", post.description);
     if (image) {
       formData.append("picture", image);
       formData.append("picturePath", image.name);
     }
 
-    const response = await fetch("http://localhost:3001/posts", {
-      method: "POST",
+    const response = await fetch(`http://localhost:3001/posts/${postId}/edit`, {
+      method: "PATCH",
       headers: { Authorization: `Bearer ${token}` },
       body: formData,
     });
-    const posts = await response.json();
-    dispatch(setPosts({ posts }));
+    const updatedPost = await response.json();
+    dispatch(setPosts({ updatedPost }));
     setImage(null);
     setPost("");
+    navigate(`/posts/${postId}`);
   };
 
   return (
-    <WidgetWrapper mb="2rem">
+    <WidgetWrapper maxWidth="500px" margin="2rem auto">
       <FlexBetween gap="1.5rem">
         <UserImage image={picturePath} />
         <InputBase
           placeholder="What's on your mind..."
-          onChange={(e) => setPost(e.target.value)}
-          value={post}
+          onChange={(e) =>
+            setPost((state) => ({ ...state, description: e.target.value }))
+          }
+          value={post.description}
           sx={{
             width: "100%",
             backgroundColor: palette.neutral.light,
@@ -158,18 +176,18 @@ const MyPostWidget = () => {
 
         <Button
           disabled={!post}
-          onClick={handlePost}
+          onClick={handleEdit}
           sx={{
             color: palette.background.alt,
             backgroundColor: palette.primary.main,
             borderRadius: "3rem",
           }}
         >
-          POST
+          EDIT
         </Button>
       </FlexBetween>
     </WidgetWrapper>
   );
 };
 
-export default MyPostWidget;
+export default EditPage;

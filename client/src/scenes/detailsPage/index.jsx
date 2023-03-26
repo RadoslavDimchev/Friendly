@@ -15,9 +15,7 @@ import {
   IconButton,
   Box,
   Divider,
-  Stack,
   Grid,
-  useMediaQuery,
   Tooltip,
   Dialog,
   DialogTitle,
@@ -29,7 +27,6 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 const DetailsPage = () => {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
   const token = useSelector((state) => state.token);
   const isAuth = Boolean(token);
@@ -70,7 +67,7 @@ const DetailsPage = () => {
     const updatedPost = await response.json();
     setPost(updatedPost);
   };
-  
+
   const closeDeleteDialog = () => setIsDeleteDialogOpen(false);
 
   const deletePostHandler = async () => {
@@ -87,7 +84,6 @@ const DetailsPage = () => {
   if (!post._id) {
     return null;
   }
-
 
   return (
     <WidgetWrapper maxWidth="500px" margin="2rem auto">
@@ -121,7 +117,7 @@ const DetailsPage = () => {
           </Grid>
           <Grid item xs={1}>
             <Tooltip title="Edit">
-              <IconButton>
+              <IconButton onClick={() => navigate(`/posts/${postId}/edit`)}>
                 <Edit sx={{ color: primary }} />
               </IconButton>
             </Tooltip>
