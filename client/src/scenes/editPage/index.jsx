@@ -13,7 +13,6 @@ import {
 import FlexBetween from "components/FlexBetween";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { setPosts } from "state";
 import UserImage from "components/UserImage";
 import {
   EditOutlined,
@@ -28,15 +27,14 @@ import Dropzone from "react-dropzone";
 
 const EditPage = () => {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const { postId } = useParams();
   const [post, setPost] = useState({});
   const [isImage, setIsImage] = useState(false);
   const [image, setImage] = useState(null);
   const token = useSelector((state) => state.token);
-  const { _id, picturePath } = useSelector((state) => state.user);
-
+  const { picturePath } = useSelector((state) => state.user);
   const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
+  
   const { palette } = useTheme();
   const mediumMain = palette.neutral.mediumMain;
   const medium = palette.neutral.medium;
@@ -66,8 +64,7 @@ const EditPage = () => {
       headers: { Authorization: `Bearer ${token}` },
       body: formData,
     });
-    const updatedPost = await response.json();
-    dispatch(setPosts({ updatedPost }));
+    await response.json();
     setImage(null);
     setPost("");
     navigate(`/posts/${postId}`);
