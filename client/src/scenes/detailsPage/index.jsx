@@ -66,6 +66,16 @@ const DetailsPage = () => {
     setPost(updatedPost);
   };
 
+  const deletePostHandler = async () => {
+    await fetch(`http://localhost:3001/posts/${postId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    navigate("/");
+  };
+
   if (!post._id) {
     return null;
   }
@@ -95,7 +105,7 @@ const DetailsPage = () => {
 
           <Grid item xs={1}>
             <Tooltip title="Delete">
-              <IconButton>
+              <IconButton onClick={deletePostHandler}>
                 <Delete color="error" />
               </IconButton>
             </Tooltip>
