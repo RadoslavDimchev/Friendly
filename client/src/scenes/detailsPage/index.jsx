@@ -18,6 +18,7 @@ import {
   Stack,
   Grid,
   useMediaQuery,
+  Tooltip,
 } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
 import { useNavigate, useParams } from "react-router-dom";
@@ -32,7 +33,6 @@ const DetailsPage = () => {
   const [post, setPost] = useState({});
   const likeCount = Object.keys(post.likes || {}).length;
   const { postId } = useParams();
-  const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
   const isOwner = isAuth && user._id === post.userId;
 
   const { palette } = useTheme();
@@ -64,7 +64,6 @@ const DetailsPage = () => {
     });
     const updatedPost = await response.json();
     setPost(updatedPost);
-    // dispatch(setPost({ post: updatedPost }));
   };
 
   if (!post._id) {
@@ -87,15 +86,19 @@ const DetailsPage = () => {
             <Typography mt="0.5rem">Author menu</Typography>
           </Grid>
           <Grid item xs={1}>
-            <IconButton>
-              <Edit sx={{ color: primary }} />
-            </IconButton>
+            <Tooltip title="Edit">
+              <IconButton>
+                <Edit sx={{ color: primary }} />
+              </IconButton>
+            </Tooltip>
           </Grid>
 
           <Grid item xs={1}>
-            <IconButton>
-              <Delete color="error" />
-            </IconButton>
+            <Tooltip title="Delete">
+              <IconButton>
+                <Delete color="error" />
+              </IconButton>
+            </Tooltip>
           </Grid>
         </Grid>
       )}
