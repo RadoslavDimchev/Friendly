@@ -1,5 +1,6 @@
-import User from "../models/User";
 import bcrypt from 'bcrypt';
+import User from '../models/User.js';
+import jwt from "jsonwebtoken";
 
 export async function register(
   firstName,
@@ -7,9 +8,10 @@ export async function register(
   email,
   password,
   picturePath,
-  friends,
   location,
-  occupation
+  occupation,
+  viewedProfile,
+  impressions
 ) {
   const existing = await User.findOne({ email })
     .collation({ locale: 'en', strength: 2 });
@@ -27,11 +29,11 @@ export async function register(
     email,
     password: passwordHash,
     picturePath,
-    friends,
     location,
-    occupation
+    occupation,
+    viewedProfile,
+    impressions
   });
-  delete user.password;
 
   return createToken(user);
 }
@@ -57,9 +59,13 @@ function createToken(user) {
     _id: user._id,
     email: user.email
   };
+  delete user.password;
 
-  return {
+  const token = {
     user,
     token: jwt.sign(payload, process.env.JWT_SECRET)
   };
+  console.log(token);
+
+  return token;
 }

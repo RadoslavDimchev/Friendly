@@ -32,36 +32,43 @@ const Form = () => {
       formData.append(value, values[value]);
     }
     formData.append("picturePath", values.picture.name);
+    console.log(formData);
 
-    const savedUserResponse = await fetch(
+    const authDataResponse = await fetch(
       "http://localhost:3001/auth/register",
       {
         method: "POST",
         body: formData,
       }
     );
+    const authData = await authDataResponse.json();
 
-    const savedUser = await savedUserResponse.json();
     onSubmitProps.resetForm();
-    if (savedUser) {
-      navigate("/login");
+    if (authData) {
+      dispatch(
+        setLogin({
+          user: authData.user,
+          token: authData.token,
+        })
+      );
+      navigate("/");
     }
   };
 
   const login = async (values, onSubmitProps) => {
-    const loggedInResponse = await fetch("http://localhost:3001/auth/login", {
+    const authDataResponse = await fetch("http://localhost:3001/auth/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(values),
     });
-    const loggedIn = await loggedInResponse.json();
+    const authData = await authDataResponse.json();
 
     onSubmitProps.resetForm();
-    if (loggedIn) {
+    if (authData) {
       dispatch(
         setLogin({
-          user: loggedIn.user,
-          token: loggedIn.token,
+          user: authData.user,
+          token: authData.token,
         })
       );
       navigate("/");
