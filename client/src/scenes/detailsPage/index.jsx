@@ -19,6 +19,10 @@ import {
   Grid,
   useMediaQuery,
   Tooltip,
+  Dialog,
+  DialogTitle,
+  Button,
+  DialogActions,
 } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
 import { useNavigate, useParams } from "react-router-dom";
@@ -34,6 +38,7 @@ const DetailsPage = () => {
   const likeCount = Object.keys(post.likes || {}).length;
   const { postId } = useParams();
   const isOwner = isAuth && user._id === post.userId;
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
 
   const { palette } = useTheme();
   const main = palette.neutral.main;
@@ -65,6 +70,8 @@ const DetailsPage = () => {
     const updatedPost = await response.json();
     setPost(updatedPost);
   };
+  
+  const closeDeleteDialog = () => setIsDeleteDialogOpen(false);
 
   const deletePostHandler = async () => {
     await fetch(`http://localhost:3001/posts/${postId}`, {
@@ -73,6 +80,7 @@ const DetailsPage = () => {
         Authorization: `Bearer ${token}`,
       },
     });
+    closeDeleteDialog();
     navigate("/");
   };
 
@@ -80,8 +88,24 @@ const DetailsPage = () => {
     return null;
   }
 
+
   return (
     <WidgetWrapper maxWidth="500px" margin="2rem auto">
+      <Dialog
+        open={isDeleteDialogOpen}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+          Are you sure you want to delete this post?
+        </DialogTitle>
+        <DialogActions>
+          <Button onClick={deletePostHandler}>Yes</Button>
+          <Button onClick={closeDeleteDialog} autoFocus>
+            No
+          </Button>
+        </DialogActions>
+      </Dialog>
       {isOwner && (
         <Grid
           container
@@ -105,7 +129,7 @@ const DetailsPage = () => {
 
           <Grid item xs={1}>
             <Tooltip title="Delete">
-              <IconButton onClick={deletePostHandler}>
+              <IconButton onClick={() => setIsDeleteDialogOpen(true)}>
                 <Delete color="error" />
               </IconButton>
             </Tooltip>
