@@ -9,9 +9,9 @@ import UserImage from "./UserImage";
 const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { _id } = useSelector((state) => state.user);
   const token = useSelector((state) => state.token);
-  const friends = useSelector((state) => state.user.friends);
+  const isAuth = Boolean(token);
+  const user = useSelector((state) => state.user);
 
   const { palette } = useTheme();
   const primaryLight = palette.primary.light;
@@ -19,11 +19,17 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const main = palette.neutral.main;
   const medium = palette.neutral.medium;
 
-  const isFriend = friends.find((friend) => friend._id === friendId);
+  const isFriend = isAuth
+    ? user.friends.find((friend) => friend._id === friendId)
+    : false;
 
   const patchFriend = async () => {
+    if (!isAuth) {
+      return navigate("/login");
+    }
+    
     const response = await fetch(
-      `http://localhost:3001/users/${_id}/${friendId}`,
+      `http://localhost:3001/users/${user._id}/${friendId}`,
       {
         method: "PATCH",
         headers: {
@@ -43,7 +49,6 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
         <Box
           onClick={() => {
             navigate(`/profile/${friendId}`);
-            navigate(0);
           }}
         >
           <Typography

@@ -59,8 +59,8 @@ function createToken(user) {
     _id: user._id,
     email: user.email
   };
-  const { password, ...userData } = user;
 
+  const { password, ...userData } = user._doc;
   return {
     user: userData,
     token: jwt.sign(payload, process.env.JWT_SECRET)

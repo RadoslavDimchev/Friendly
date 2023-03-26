@@ -18,9 +18,9 @@ const SelectMenu = () => {
 
   const selectMenuValue = isAuth
     ? fullName
-    : pathname === "/login"
-    ? "Login"
-    : "Register";
+    : pathname === "/register"
+    ? "Register"
+    : "Login";
 
   return (
     <FormControl variant="standard" value={selectMenuValue}>

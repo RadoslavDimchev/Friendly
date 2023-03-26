@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setPost } from "state";
 import { Typography, IconButton, Box, Divider } from "@mui/material";
 import FlexBetween from "components/FlexBetween";
+import { useNavigate } from "react-router-dom";
 
 const PostWidget = ({
   postId,
@@ -26,30 +27,34 @@ const PostWidget = ({
 }) => {
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const token = useSelector((state) => state.token);
-  const loggedInUserId = useSelector((state) => state.user._id);
-  const isLiked = Boolean(likes[loggedInUserId]);
+  const isAuth = Boolean(token);
+  const user = useSelector((state) => state.user);
   const likeCount = Object.keys(likes).length;
 
   const { palette } = useTheme();
   const main = palette.neutral.main;
-  const primary = palette.primary.main;
 
   const patchLike = async () => {
+    if (!isAuth) {
+      return navigate("/login");
+    }
+
     const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
       method: "PATCH",
       headers: {
         Authorization: `Bearer ${token}`,
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ userId: loggedInUserId }),
+      body: JSON.stringify({ userId: user._id }),
     });
     const updatedPost = await response.json();
     dispatch(setPost({ post: updatedPost }));
   };
 
   return (
-    <WidgetWrapper m="2rem 0">
+    <WidgetWrapper mb="2rem">
       <Friend
         friendId={postUserId}
         name={name}
@@ -72,8 +77,8 @@ const PostWidget = ({
         <FlexBetween gap="1rem">
           <FlexBetween gap="0.3rem">
             <IconButton onClick={patchLike}>
-              {isLiked ? (
-                <FavoriteOutlined sx={{ color: primary }} />
+              {isAuth && Boolean(likes[user._id]) ? (
+                <FavoriteOutlined sx={{ color: palette.primary.main }} />
               ) : (
                 <FavoriteBorderOutlined />
               )}
