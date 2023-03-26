@@ -37,7 +37,7 @@ const HomePage = () => {
         <Box flexBasis="26%">
           <AdvertWidget />
           <Box m="2rem 0" />
-          {isAuth && <FriendListWidget user={user} />}
+          {isAuth && <FriendListWidget />}
         </Box>
       )}
 

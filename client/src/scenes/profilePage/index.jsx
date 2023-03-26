@@ -1,6 +1,6 @@
 import { Box, useMediaQuery } from "@mui/material";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import Navbar from "scenes/navbar";
 import FriendListWidget from "scenes/widgets/FriendListWidget";
 import PostsWidget from "scenes/widgets/PostsWidget";
@@ -10,6 +10,7 @@ const ProfilePage = () => {
   const [user, setUser] = useState(null);
   const { userId } = useParams();
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
+  const { pathname } = useLocation();
 
   const getUser = async () => {
     const response = await fetch(`http://localhost:3001/users/${userId}`);
@@ -37,14 +38,16 @@ const ProfilePage = () => {
       >
         <Box flexBasis={isNonMobileScreens ? "26%" : undefined}>
           <UserWidget userId={userId} picturePath={user.picturePath} />
-          <Box m="2rem 0" />
-          <FriendListWidget user={user} />
         </Box>
         <Box
           flexBasis={isNonMobileScreens ? "42%" : undefined}
           mt={isNonMobileScreens ? undefined : "2rem"}
         >
-          <PostsWidget />
+          {pathname.includes("friends") ? (
+            <FriendListWidget />
+          ) : (
+            <PostsWidget />
+          )}
         </Box>
       </Box>
     </Box>
