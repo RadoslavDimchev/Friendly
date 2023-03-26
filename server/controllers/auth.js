@@ -3,7 +3,7 @@ import jwt from 'jsonwebtoken';
 import User from '../models/User.js';
 
 // REGISTER USER
-export const register = async (req, res) => {
+export const registerUser = async (req, res) => {
   try {
     const {
       firstName,
@@ -15,6 +15,18 @@ export const register = async (req, res) => {
       location,
       occupation,
     } = req.body;
+
+    const token = await register(
+      firstName,
+      lastName,
+      email,
+      password,
+      picturePath,
+      friends,
+      location,
+      occupation
+    );
+    res.status(201).json(token);
 
     const salt = await bcrypt.genSalt();
     const passwordHash = await bcrypt.hash(password, salt);
@@ -39,7 +51,7 @@ export const register = async (req, res) => {
 };
 
 // LOGIN USER
-export const login = async (req, res) => {
+export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
