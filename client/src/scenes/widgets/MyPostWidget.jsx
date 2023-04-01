@@ -36,6 +36,7 @@ const MyPostWidget = () => {
   const isNonMobileScreens = useMediaQuery('(min-width: 1000px)');
   const mediumMain = palette.neutral.mediumMain;
   const medium = palette.neutral.medium;
+  const isPostBtnDisabled = !post && !image ? true : false;
 
   const handlePost = async () => {
     const formData = new FormData();
@@ -55,6 +56,7 @@ const MyPostWidget = () => {
     dispatch(setPosts({ posts }));
     setImage(null);
     setPost('');
+    setIsImage(false);
   };
 
   return (
@@ -157,7 +159,7 @@ const MyPostWidget = () => {
         )}
 
         <Button
-          disabled={!post}
+          disabled={isPostBtnDisabled}
           onClick={handlePost}
           sx={{
             color: palette.background.alt,
