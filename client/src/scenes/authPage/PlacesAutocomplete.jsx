@@ -9,8 +9,7 @@ const PlacesAutocomplete = ({ handlePlaceSelect }) => {
   const [inputValue, setInputValue] = useState("");
 
   const {
-    ready,
-    suggestions: { status, data },
+    suggestions: { data },
     setValue,
     clearSuggestions,
   } = usePlacesAutocomplete();

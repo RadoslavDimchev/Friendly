@@ -1,6 +1,6 @@
-import { useTheme } from "@emotion/react";
-import WidgetWrapper from "components/WidgetWrapper";
-import { useDispatch, useSelector } from "react-redux";
+import { useTheme } from '@emotion/react';
+import WidgetWrapper from 'components/WidgetWrapper';
+import { useSelector } from 'react-redux';
 import {
   Typography,
   IconButton,
@@ -9,11 +9,11 @@ import {
   Button,
   useMediaQuery,
   InputBase,
-} from "@mui/material";
-import FlexBetween from "components/FlexBetween";
-import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
-import UserImage from "components/UserImage";
+} from '@mui/material';
+import FlexBetween from 'components/FlexBetween';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import UserImage from 'components/UserImage';
 import {
   EditOutlined,
   DeleteOutlined,
@@ -22,8 +22,8 @@ import {
   ImageOutlined,
   MicOutlined,
   MoreHorizOutlined,
-} from "@mui/icons-material";
-import Dropzone from "react-dropzone";
+} from '@mui/icons-material';
+import Dropzone from 'react-dropzone';
 
 const EditPage = () => {
   const navigate = useNavigate();
@@ -33,40 +33,40 @@ const EditPage = () => {
   const [image, setImage] = useState(null);
   const token = useSelector((state) => state.token);
   const { picturePath } = useSelector((state) => state.user);
-  const isNonMobileScreens = useMediaQuery("(min-width: 1000px)");
-  
+  const isNonMobileScreens = useMediaQuery('(min-width: 1000px)');
+
   const { palette } = useTheme();
   const mediumMain = palette.neutral.mediumMain;
   const medium = palette.neutral.medium;
 
-  const getPost = async () => {
-    const response = await fetch(`http://localhost:3001/posts/${postId}`);
-    const data = await response.json();
-    setPost(data);
-    setIsImage(!!data.picturePath);
-    setImage({ name: data.picturePath });
-  };
-
   useEffect(() => {
+    const getPost = async () => {
+      const response = await fetch(`http://localhost:3001/posts/${postId}`);
+      const data = await response.json();
+      setPost(data);
+      setIsImage(!!data.picturePath);
+      setImage({ name: data.picturePath });
+    };
+
     getPost();
   }, [postId]);
 
   const handleEdit = async () => {
     const formData = new FormData();
-    formData.append("description", post.description);
+    formData.append('description', post.description);
     if (image) {
-      formData.append("picture", image);
-      formData.append("picturePath", image.name);
+      formData.append('picture', image);
+      formData.append('picturePath', image.name);
     }
 
     const response = await fetch(`http://localhost:3001/posts/${postId}/edit`, {
-      method: "PATCH",
+      method: 'PATCH',
       headers: { Authorization: `Bearer ${token}` },
       body: formData,
     });
     await response.json();
     setImage(null);
-    setPost("");
+    setPost('');
     navigate(`/posts/${postId}`);
   };
 
@@ -81,11 +81,11 @@ const EditPage = () => {
           }
           value={post.description}
           sx={{
-            width: "100%",
+            width: '100%',
             backgroundColor: palette.neutral.light,
-            borderRadius: "2rem",
-            padding: "1rem 2rem",
-            fontSize: "18px",
+            borderRadius: '2rem',
+            padding: '1rem 2rem',
+            fontSize: '18px',
           }}
           multiline
         />
@@ -108,7 +108,7 @@ const EditPage = () => {
                   {...getRootProps()}
                   border={`2px dashed ${palette.primary.main}`}
                   p="1rem"
-                  sx={{ "&:hover": { cursor: "pointer" } }}
+                  sx={{ '&:hover': { cursor: 'pointer' } }}
                   width="100%"
                 >
                   <input {...getInputProps()} />
@@ -124,7 +124,7 @@ const EditPage = () => {
                 {image && (
                   <IconButton
                     onClick={() => setImage(null)}
-                    sx={{ width: "15%" }}
+                    sx={{ width: '15%' }}
                   >
                     <DeleteOutlined />
                   </IconButton>
@@ -135,14 +135,14 @@ const EditPage = () => {
         </Box>
       )}
 
-      <Divider sx={{ margin: "1.25rem 0" }} />
+      <Divider sx={{ margin: '1.25rem 0' }} />
 
       <FlexBetween>
         <FlexBetween gap="0.25rem" onClick={() => setIsImage(!isImage)}>
           <ImageOutlined sx={{ color: mediumMain }} />
           <Typography
             color={mediumMain}
-            sx={{ "&:hover": { cursor: "pointer", color: medium } }}
+            sx={{ '&:hover': { cursor: 'pointer', color: medium } }}
           >
             Image
           </Typography>
@@ -177,7 +177,7 @@ const EditPage = () => {
           sx={{
             color: palette.background.alt,
             backgroundColor: palette.primary.main,
-            borderRadius: "3rem",
+            borderRadius: '3rem',
           }}
         >
           EDIT

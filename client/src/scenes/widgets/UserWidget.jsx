@@ -3,13 +3,13 @@ import {
   EditOutlined,
   LocationOnOutlined,
   WorkOutlineOutlined,
-} from "@mui/icons-material";
-import { Box, Typography, Divider, useTheme, Button } from "@mui/material";
-import FlexBetween from "components/FlexBetween";
-import UserImage from "components/UserImage";
-import WidgetWrapper from "components/WidgetWrapper";
-import { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+} from '@mui/icons-material';
+import { Box, Typography, Divider, useTheme, Button } from '@mui/material';
+import FlexBetween from 'components/FlexBetween';
+import UserImage from 'components/UserImage';
+import WidgetWrapper from 'components/WidgetWrapper';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const UserWidget = ({ userId, picturePath }) => {
   const [user, setUser] = useState(null);
@@ -19,36 +19,26 @@ const UserWidget = ({ userId, picturePath }) => {
   const medium = palette.neutral.medium;
   const main = palette.neutral.main;
 
-  const getUser = async () => {
-    const response = await fetch(`http://localhost:3001/users/${userId}`);
-    const data = await response.json();
-    setUser(data);
-  };
-
   useEffect(() => {
+    const getUser = async () => {
+      const response = await fetch(`http://localhost:3001/users/${userId}`);
+      const data = await response.json();
+      setUser(data);
+    };
+
     getUser();
-  }, []);
+  }, [userId]);
 
   if (!user) {
     return null;
   }
 
-  const {
-    firstName,
-    lastName,
-    coordinates,
-    occupation,
-    viewedProfile,
-    impressions,
-  } = user;
+  const { firstName, lastName, occupation, viewedProfile, impressions } = user;
 
   return (
     <WidgetWrapper>
       {/* FIRST ROW */}
-      <FlexBetween
-        gap="0.5rem"
-        pb="1.1rem"
-      >
+      <FlexBetween gap="0.5rem" pb="1.1rem">
         <FlexBetween gap="1rem">
           <UserImage image={picturePath} />
           <Box>
@@ -57,16 +47,18 @@ const UserWidget = ({ userId, picturePath }) => {
               color={dark}
               fontWeight="500"
               sx={{
-                "&:hover": {
+                '&:hover': {
                   color: palette.primary.light,
-                  cursor: "pointer",
+                  cursor: 'pointer',
                 },
               }}
               onClick={() => navigate(`/profile/${userId}`)}
             >
               {firstName} {lastName}
             </Typography>
-            <Button onClick={() => navigate(`/profile/${userId}/friends`)} >View friends</Button>
+            <Button onClick={() => navigate(`/profile/${userId}/friends`)}>
+              View friends
+            </Button>
           </Box>
         </FlexBetween>
         <ManageAccountsOutlined />

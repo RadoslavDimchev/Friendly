@@ -1,4 +1,4 @@
-import { useTheme } from "@emotion/react";
+import { useTheme } from '@emotion/react';
 import {
   ChatBubbleOutlineOutlined,
   FavoriteBorderOutlined,
@@ -6,10 +6,10 @@ import {
   ShareOutlined,
   Edit,
   Delete,
-} from "@mui/icons-material";
-import Friend from "components/Friend";
-import WidgetWrapper from "components/WidgetWrapper";
-import { useDispatch, useSelector } from "react-redux";
+} from '@mui/icons-material';
+import Friend from 'components/Friend';
+import WidgetWrapper from 'components/WidgetWrapper';
+import { useSelector } from 'react-redux';
 import {
   Typography,
   IconButton,
@@ -21,10 +21,10 @@ import {
   DialogTitle,
   Button,
   DialogActions,
-} from "@mui/material";
-import FlexBetween from "components/FlexBetween";
-import { useNavigate, useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+} from '@mui/material';
+import FlexBetween from 'components/FlexBetween';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 
 const DetailsPage = () => {
   const navigate = useNavigate();
@@ -41,26 +41,26 @@ const DetailsPage = () => {
   const main = palette.neutral.main;
   const primary = palette.primary.main;
 
-  const getPost = async () => {
-    const response = await fetch(`http://localhost:3001/posts/${postId}`);
-    const data = await response.json();
-    setPost(data);
-  };
-
   useEffect(() => {
+    const getPost = async () => {
+      const response = await fetch(`http://localhost:3001/posts/${postId}`);
+      const data = await response.json();
+      setPost(data);
+    };
+
     getPost();
   }, [postId]);
 
   const patchLike = async () => {
     if (!isAuth) {
-      return navigate("/login");
+      return navigate('/login');
     }
 
     const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
-      method: "PATCH",
+      method: 'PATCH',
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ userId: user._id }),
     });
@@ -72,13 +72,13 @@ const DetailsPage = () => {
 
   const deletePostHandler = async () => {
     await fetch(`http://localhost:3001/posts/${postId}`, {
-      method: "DELETE",
+      method: 'DELETE',
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
     closeDeleteDialog();
-    navigate("/");
+    navigate('/');
   };
 
   if (!post._id) {
@@ -107,9 +107,9 @@ const DetailsPage = () => {
           container
           sx={{
             border: `2px dashed ${main}`,
-            borderRadius: "5px",
-            padding: "4px 8px",
-            marginBottom: "1rem",
+            borderRadius: '5px',
+            padding: '4px 8px',
+            marginBottom: '1rem',
           }}
         >
           <Grid item xs={10}>
@@ -138,7 +138,7 @@ const DetailsPage = () => {
         subtitle={'subtitle'}
         userPicturePath={post.userPicturePath}
       />
-      <Typography color={main} sx={{ mt: "1rem" }}>
+      <Typography color={main} sx={{ mt: '1rem' }}>
         {post.description}
       </Typography>
       {post.picturePath && (
@@ -147,7 +147,7 @@ const DetailsPage = () => {
           alt="post"
           width="100%"
           height="auto"
-          style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
+          style={{ borderRadius: '0.75rem', marginTop: '0.75rem' }}
         />
       )}
       <FlexBetween mt="0.25rem">
@@ -179,7 +179,7 @@ const DetailsPage = () => {
         {post.comments?.map((comment, i) => (
           <Box key={i}>
             <Divider />
-            <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
+            <Typography sx={{ color: main, m: '0.5rem 0', pl: '1rem' }}>
               {comment}
             </Typography>
           </Box>

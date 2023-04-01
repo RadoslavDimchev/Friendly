@@ -35,7 +35,7 @@ const PostsWidget = () => {
     } else {
       getUserPosts();
     }
-  }, [params.userId]);
+  }, [params.userId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <>

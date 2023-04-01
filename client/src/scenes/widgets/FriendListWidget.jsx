@@ -42,7 +42,7 @@ const FriendListWidget = () => {
 
   useEffect(() => {
     getFriends();
-  }, []);
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   let friends = [];
   if (!userId || (isAuth && user._id === userId)) {
