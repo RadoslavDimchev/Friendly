@@ -1,8 +1,17 @@
-import { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useLocation, useParams } from "react-router-dom";
-import { setPosts } from "state";
-import PostWidget from "./PostWidget";
+import {
+  Divider,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Typography,
+} from '@mui/material';
+import { Stack } from '@mui/system';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useParams } from 'react-router-dom';
+import { setPosts } from 'state';
+import PostWidget from './PostWidget';
 
 const PostsWidget = () => {
   const dispatch = useDispatch();
@@ -12,7 +21,7 @@ const PostsWidget = () => {
   const params = useParams();
 
   const getPosts = async () => {
-    const response = await fetch("http://localhost:3001/posts");
+    const response = await fetch('http://localhost:3001/posts');
     const data = await response.json();
     dispatch(setPosts({ posts: data }));
   };
@@ -21,7 +30,7 @@ const PostsWidget = () => {
     const response = await fetch(
       `http://localhost:3001/posts/${params.userId}/posts`,
       {
-        method: "GET",
+        method: 'GET',
         headers: { Authorization: `Bearer ${token}` },
       }
     );
@@ -30,7 +39,7 @@ const PostsWidget = () => {
   };
 
   useEffect(() => {
-    if (pathname === "/") {
+    if (pathname === '/') {
       getPosts();
     } else {
       getUserPosts();
@@ -39,6 +48,29 @@ const PostsWidget = () => {
 
   return (
     <>
+      <Stack
+        direction="row"
+        justifyContent="space-between"
+        alignItems="center"
+        spacing={2}
+        sx={{mb: '0.5rem'}}
+      >
+        <Divider sx={{ width: '80%' }} />
+        <FormControl variant="standard"  >
+          <InputLabel id="demo-simple-select-standard-label">
+            Sort by:
+          </InputLabel>
+          <Select
+            labelId="demo-simple-select-standard-label"
+            id="demo-simple-select-standard"
+            value={12}
+            onChange={(e) => console.log(e)}
+          >
+            <MenuItem value={12}>Recent</MenuItem>
+            <MenuItem value={20}>Likes</MenuItem>
+          </Select>
+        </FormControl>
+      </Stack>
       {posts.map(
         ({
           _id,
@@ -50,7 +82,7 @@ const PostsWidget = () => {
           userPicturePath,
           likes,
           comments,
-          occupation
+          occupation,
         }) => (
           <PostWidget
             key={_id}
