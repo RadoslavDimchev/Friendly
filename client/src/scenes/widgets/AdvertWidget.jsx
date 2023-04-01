@@ -1,6 +1,6 @@
-import { useTheme, Typography } from "@mui/material";
-import FlexBetween from "components/FlexBetween";
-import WidgetWrapper from "components/WidgetWrapper";
+import { useTheme, Typography } from '@mui/material';
+import FlexBetween from 'components/FlexBetween';
+import WidgetWrapper from 'components/WidgetWrapper';
 
 const AdvertWidget = () => {
   const { palette } = useTheme();
@@ -19,17 +19,17 @@ const AdvertWidget = () => {
       <img
         width="100%"
         height="auto"
-        src="http://localhost:3001/assets/info4.jpeg"
+        src="http://localhost:3001/assets/radoslav-advert.jpg"
         alt="advert"
-        style={{ borderRadius: "0.75rem", margin: "0.75rem 0" }}
+        style={{ borderRadius: '0.75rem', margin: '0.75rem 0' }}
       />
       <FlexBetween>
-        <Typography color={main}>MikaComsmetics</Typography>
-        <Typography color={medium}>mikacomsmetics.com</Typography>
+        <Typography color={main}>Dimchev Solutions</Typography>
+        <Typography color={medium}>dimchevsoluctions.com</Typography>
       </FlexBetween>
       <Typography color={medium} m="0.5rem 0">
-        Your pathway to stunning and immaculate beauty and made sure your skin
-        is exfoliating skin and shining like light.
+        Let's transform your business together and propel it towards success in
+        today's digital landscape.
       </Typography>
     </WidgetWrapper>
   );
