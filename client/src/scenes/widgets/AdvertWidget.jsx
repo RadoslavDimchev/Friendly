@@ -25,7 +25,7 @@ const AdvertWidget = () => {
       />
       <FlexBetween>
         <Typography color={main}>Dimchev Solutions</Typography>
-        <Typography color={medium}>dimchevsoluctions.com</Typography>
+        <Typography color={medium}>dimchevsolutions.com</Typography>
       </FlexBetween>
       <Typography color={medium} m="0.5rem 0">
         Let's transform your business together and propel it towards success in

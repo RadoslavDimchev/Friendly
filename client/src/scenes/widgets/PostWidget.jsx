@@ -66,7 +66,7 @@ const PostWidget = ({
         {description.split(" ").slice(0, 10).join(" ")}
         <Link
           to={`/posts/${postId}`}
-          style={{ color: primary, marginLeft: "0.3rem" }}
+          style={{ color: main, marginLeft: "0.3rem" }}
         >
           view details...
         </Link>
