@@ -135,7 +135,7 @@ const DetailsPage = () => {
       <Friend
         friendId={post.userId}
         name={`${post.firstName} ${post.lastName}`}
-        subtitle={post.location}
+        subtitle={'subtitle'}
         userPicturePath={post.userPicturePath}
       />
       <Typography color={main} sx={{ mt: "1rem" }}>

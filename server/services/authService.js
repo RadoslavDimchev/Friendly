@@ -8,7 +8,7 @@ export async function register(
   email,
   password,
   picturePath,
-  location,
+  coordinates,
   occupation,
   viewedProfile,
   impressions
@@ -19,7 +19,7 @@ export async function register(
   if (existing) {
     throw new Error('Email is taken');
   }
-
+  
   const salt = await bcrypt.genSalt();
   const passwordHash = await bcrypt.hash(password, salt);
 
@@ -29,7 +29,7 @@ export async function register(
     email,
     password: passwordHash,
     picturePath,
-    location,
+    coordinates,
     occupation,
     viewedProfile,
     impressions

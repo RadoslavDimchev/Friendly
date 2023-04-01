@@ -8,7 +8,7 @@ export const registerUser = async (req, res) => {
       email,
       password,
       picturePath,
-      location,
+      coordinates,
       occupation,
     } = req.body;
 
@@ -18,7 +18,7 @@ export const registerUser = async (req, res) => {
       email,
       password,
       picturePath,
-      location,
+      JSON.parse(coordinates),
       occupation,
       Math.floor(Math.random() * 10000),
       Math.floor(Math.random() * 10000),

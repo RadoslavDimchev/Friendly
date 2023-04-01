@@ -3,7 +3,6 @@ export const initialValuesRegister = {
   lastName: "",
   email: "",
   password: "",
-  location: "",
   occupation: "",
   picture: "",
 };

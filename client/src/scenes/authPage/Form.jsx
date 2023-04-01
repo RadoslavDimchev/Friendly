@@ -15,6 +15,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { setLogin } from "state";
 import { registerSchema, loginSchema } from "./validationSchemas";
 import { initialValuesRegister, initialValuesLogin } from "./formValues";
+import PlacesAutocomplete from "./PlacesAutocomplete";
+import { useJsApiLoader } from "@react-google-maps/api";
 
 const Form = () => {
   const { palette } = useTheme();
@@ -24,6 +26,14 @@ const Form = () => {
   const { pathname } = useLocation();
   const isLogin = pathname === "/login";
   const isRegister = pathname === "/register";
+
+  const { isLoaded, loadError } = useJsApiLoader({
+    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+    libraries: ["places"],
+  });
+  if (loadError) {
+    return <Box>Map cannot be loaded right now, sorry.</Box>;
+  }
 
   const register = async (values, onSubmitProps) => {
     // this allows to send form info with image
@@ -132,16 +142,13 @@ const Form = () => {
                   helperText={touched.lastName && errors.lastName}
                   sx={{ gridColumn: "span 2" }}
                 />
-                <TextField
-                  label="Location"
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  value={values.location}
-                  name="location"
-                  error={Boolean(touched.location) && Boolean(errors.location)}
-                  helperText={touched.location && errors.location}
-                  sx={{ gridColumn: "span 4" }}
-                />
+                {isLoaded && (
+                  <PlacesAutocomplete
+                    handlePlaceSelect={(lat, lng) => {
+                      setFieldValue("coordinates", JSON.stringify({lat, lng}));
+                    }}
+                  />
+                )}
                 <TextField
                   label="Occupation"
                   onBlur={handleBlur}
@@ -189,7 +196,6 @@ const Form = () => {
                 </Box>
               </>
             )}
-
             <TextField
               label="Email"
               onBlur={handleBlur}
