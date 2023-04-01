@@ -1,7 +1,5 @@
 import {
   ManageAccountsOutlined,
-  EditOutlined,
-  LocationOnOutlined,
   WorkOutlineOutlined,
 } from '@mui/icons-material';
 import { Box, Typography, Divider, useTheme, Button } from '@mui/material';
@@ -56,9 +54,15 @@ const UserWidget = ({ userId, picturePath }) => {
             >
               {firstName} {lastName}
             </Typography>
-            <Button onClick={() => navigate(`/profile/${userId}/friends`)}>
+            <Link
+              to={`/profile/${userId}/friends`}
+              style={{
+                textDecoration: 'none',
+                color: palette.primary.main,
+              }}
+            >
               View friends
-            </Button>
+            </Link>
           </Box>
         </FlexBetween>
         <ManageAccountsOutlined />
@@ -68,11 +72,7 @@ const UserWidget = ({ userId, picturePath }) => {
 
       {/* SECOND ROW */}
       <Box p="1rem 0">
-        <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
-          <LocationOnOutlined fontSize="large" sx={{ color: main }} />
-          <Typography color={medium}>location</Typography>
-        </Box>
-        <Box display="flex" alignItems="center" gap="1rem" mb="0.5rem">
+        <Box display="flex" alignItems="center" gap="1rem">
           <WorkOutlineOutlined fontSize="large" sx={{ color: main }} />
           <Typography color={medium}>{occupation}</Typography>
         </Box>
@@ -107,10 +107,20 @@ const UserWidget = ({ userId, picturePath }) => {
           <FlexBetween gap="1rem">
             {user.linkedin ? (
               <Link to={user.linkedin} target="_blank">
-                <img src="../assets/linkedin.png" alt="linkedin" width="50px" height="50px" />
+                <img
+                  src="/assets/linkedin.png"
+                  alt="linkedin"
+                  width="50px"
+                  height="50px"
+                />
               </Link>
             ) : (
-              <img src="../assets/linkedin.png" alt="linkedin" width="50px" height="50px"  />
+              <img
+                src="/assets/linkedin.png"
+                alt="linkedin"
+                width="50px"
+                height="50px"
+              />
             )}
             <Box>
               <Typography color={main} fontWeight="500">

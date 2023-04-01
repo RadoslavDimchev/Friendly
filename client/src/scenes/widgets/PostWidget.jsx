@@ -23,6 +23,7 @@ const PostWidget = ({
   userPicturePath,
   likes,
   comments,
+  occupation
 }) => {
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
@@ -58,7 +59,7 @@ const PostWidget = ({
       <Friend
         friendId={postUserId}
         name={name}
-        subtitle={'todoooo'}
+        subtitle={occupation}
         userPicturePath={userPicturePath}
       />
       <Typography color={main} sx={{ mt: "1rem" }}>
