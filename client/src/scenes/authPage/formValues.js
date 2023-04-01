@@ -1,14 +1,14 @@
 export const initialValuesRegister = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  password: "",
+  firstName: '',
+  lastName: '',
+  email: '',
+  password: '',
   coordinates: JSON.stringify({}),
-  occupation: "",
-  picture: "",
+  occupation: '',
+  picture: '',
 };
 
 export const initialValuesLogin = {
-  email: "",
-  password: "",
+  email: '',
+  password: '',
 };

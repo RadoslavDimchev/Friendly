@@ -12,26 +12,29 @@ import DetailsPage from 'scenes/detailsPage';
 import EditPage from 'scenes/editPage';
 
 function App() {
-  const mode = useSelector(state => state.mode);
+  const mode = useSelector((state) => state.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
-  const isAuth = Boolean(useSelector(state => state.token));
+  const isAuth = Boolean(useSelector((state) => state.token));
 
   return (
     <div className="app">
       <BrowserRouter>
-        <ThemeProvider theme={theme} >
+        <ThemeProvider theme={theme}>
           <CssBaseline />
           <Navbar />
-          <Box p="5rem 6%" pb="2rem" >
+          <Box p="5rem 6%" pb="2rem">
             <Routes>
-              <Route path='/' element={<HomePage />} />
+              <Route path="/" element={<HomePage />} />
               {/* <Route path='/profile/:userId' element={isAuth ? <ProfilePage /> : <Navigate to="/login" />} /> */}
-              <Route path='/profile/:userId' element={<ProfilePage />} />
-              <Route path='/profile/:userId/friends' element={<ProfilePage />} />
-              <Route path='/posts/:postId' element={<DetailsPage />} />
-              <Route path='/posts/:postId/edit' element={<EditPage />} />
-              <Route path='/login' element={<AuthPage />} />
-              <Route path='/register' element={<AuthPage />} />
+              <Route path="/profile/:userId" element={<ProfilePage />} />
+              <Route
+                path="/profile/:userId/friends"
+                element={<ProfilePage />}
+              />
+              <Route path="/posts/:postId" element={<DetailsPage />} />
+              <Route path="/posts/:postId/edit" element={<EditPage />} />
+              <Route path="/login" element={<AuthPage />} />
+              <Route path="/register" element={<AuthPage />} />
             </Routes>
           </Box>
         </ThemeProvider>
