@@ -39,7 +39,7 @@ const ProfilePage = () => {
       >
         <Box flexBasis={isNonMobileScreens ? "26%" : undefined}>
           <UserWidget userId={userId} picturePath={user.picturePath} />
-          <GoogleMapsWidget />
+          <GoogleMapsWidget user={user} />
         </Box>
         <Box
           flexBasis={isNonMobileScreens ? "42%" : undefined}

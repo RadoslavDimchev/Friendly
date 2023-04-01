@@ -3,6 +3,7 @@ export const initialValuesRegister = {
   lastName: "",
   email: "",
   password: "",
+  coordinates: JSON.stringify({}),
   occupation: "",
   picture: "",
 };
