@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useLocation, useParams } from "react-router-dom";
 import Navbar from "scenes/navbar";
 import FriendListWidget from "scenes/widgets/FriendListWidget";
+import GoogleMapsWidget from "scenes/widgets/GoogleMapsWidget";
 import PostsWidget from "scenes/widgets/PostsWidget";
 import UserWidget from "scenes/widgets/UserWidget";
 
@@ -38,6 +39,7 @@ const ProfilePage = () => {
       >
         <Box flexBasis={isNonMobileScreens ? "26%" : undefined}>
           <UserWidget userId={userId} picturePath={user.picturePath} />
+          <GoogleMapsWidget />
         </Box>
         <Box
           flexBasis={isNonMobileScreens ? "42%" : undefined}
