@@ -10,6 +10,7 @@ export const registerUser = async (req, res) => {
       picturePath,
       coordinates,
       occupation,
+      linkedin
     } = req.body;
 
     const token = await register(
@@ -20,6 +21,7 @@ export const registerUser = async (req, res) => {
       picturePath,
       JSON.parse(coordinates),
       occupation,
+      linkedin,
       Math.floor(Math.random() * 10000),
       Math.floor(Math.random() * 10000),
     );

@@ -9,7 +9,7 @@ import FlexBetween from 'components/FlexBetween';
 import UserImage from 'components/UserImage';
 import WidgetWrapper from 'components/WidgetWrapper';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const UserWidget = ({ userId, picturePath }) => {
   const [user, setUser] = useState(null);
@@ -103,23 +103,15 @@ const UserWidget = ({ userId, picturePath }) => {
         <Typography fontSize="1rem" color={main} fontWeight="500" mb="1rem">
           Social Profiles
         </Typography>
-
-        <FlexBetween gap="1rem" mb="0.5rem">
-          <FlexBetween gap="1rem">
-            <img src="../assets/twitter.png" alt="twitter" />
-            <Box>
-              <Typography color={main} fontWeight="500">
-                Twitter
-              </Typography>
-              <Typography color={main}>Social Network</Typography>
-            </Box>
-          </FlexBetween>
-          <EditOutlined sx={{ color: main }} />
-        </FlexBetween>
-
         <FlexBetween gap="1rem">
           <FlexBetween gap="1rem">
-            <img src="../assets/linkedin.png" alt="linkedin" />
+            {user.linkedin ? (
+              <Link to={user.linkedin} target="_blank">
+                <img src="../assets/linkedin.png" alt="linkedin" width="50px" height="50px" />
+              </Link>
+            ) : (
+              <img src="../assets/linkedin.png" alt="linkedin" width="50px" height="50px"  />
+            )}
             <Box>
               <Typography color={main} fontWeight="500">
                 LinkedIn
@@ -127,7 +119,6 @@ const UserWidget = ({ userId, picturePath }) => {
               <Typography color={main}>Network Platform</Typography>
             </Box>
           </FlexBetween>
-          <EditOutlined sx={{ color: main }} />
         </FlexBetween>
       </Box>
     </WidgetWrapper>

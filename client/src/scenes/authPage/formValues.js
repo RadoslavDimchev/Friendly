@@ -6,6 +6,7 @@ export const initialValuesRegister = {
   coordinates: JSON.stringify({}),
   occupation: '',
   picture: '',
+  linkedin: '',
 };
 
 export const initialValuesLogin = {

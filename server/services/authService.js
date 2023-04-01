@@ -10,8 +10,9 @@ export async function register(
   picturePath,
   coordinates,
   occupation,
+  linkedin,
   viewedProfile,
-  impressions
+  impressions,
 ) {
   const existing = await User.findOne({ email })
     .collation({ locale: 'en', strength: 2 });
@@ -32,7 +33,8 @@ export async function register(
     coordinates,
     occupation,
     viewedProfile,
-    impressions
+    impressions,
+    linkedin,
   });
 
   return createToken(user);

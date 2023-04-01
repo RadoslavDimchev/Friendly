@@ -39,6 +39,7 @@ const userSchema = new mongoose.Schema({
   occupation: String,
   viewedProfile: Number,
   impressions: Number,
+  linkedin: String,
 }, { timestamps: true });
 
 userSchema.index({ email: 1 }, {
