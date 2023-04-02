@@ -28,6 +28,7 @@ import FlexBetween from 'components/FlexBetween';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import * as postService from 'services/postService';
+import PostComments from 'components/PostComments';
 
 const DetailsPage = () => {
   const navigate = useNavigate();
@@ -202,20 +203,14 @@ const DetailsPage = () => {
             multiline
             value={comment}
             onChange={(e) => setComment(e.target.value)}
+            sx={{width: '100%'}}
           />
           <IconButton onClick={addCommentHandler} disabled={!comment}>
             <AddComment />
           </IconButton>
         </FlexBetween>
 
-        {post.comments?.map((comment, i) => (
-          <Box key={i}>
-            {i > 0 ? <Divider /> : null}
-            <Typography sx={{ color: main, m: '0.5rem 0', pl: '1rem' }}>
-              {comment.fullName}: {comment.comment}
-            </Typography>
-          </Box>
-        ))}
+        <PostComments comments={post.comments} postId={postId} main={main} />
       </Box>
     </WidgetWrapper>
   );

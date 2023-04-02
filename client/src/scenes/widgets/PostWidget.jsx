@@ -14,6 +14,7 @@ import { Typography, IconButton, Box, Divider } from '@mui/material';
 import FlexBetween from 'components/FlexBetween';
 import { Link, useNavigate } from 'react-router-dom';
 import * as postService from 'services/postService';
+import PostComments from 'components/PostComments';
 
 const PostWidget = ({
   postId,
@@ -102,24 +103,10 @@ const PostWidget = ({
           <ShareOutlined />
         </IconButton>
       </FlexBetween>
+
       {isComments && (
         <Box mt="0.5rem">
-          {comments.length === 0 && (
-            <Typography sx={{ color: main, m: '0.5rem 0', pl: '1rem' }}>
-              No comments,{' '}
-              <Link to={`/posts/${postId}`} style={{ color: main, ml: '1rem' }}>
-                be the first one{' '}
-              </Link>
-            </Typography>
-          )}
-          {comments.slice(0, 3).map((comment, i) => (
-            <Box key={i}>
-              {i > 0 ? <Divider /> : null}
-              <Typography sx={{ color: main, m: '0.5rem 0', pl: '1rem' }}>
-                {comment.fullName}: {comment.comment}
-              </Typography>
-            </Box>
-          ))}
+          <PostComments comments={comments} postId={postId} main={main} />
           {comments.length > 3 && (
             <Typography sx={{ m: '0.5rem 0', pl: '1rem' }}>
               <Link to={`/posts/${postId}`} style={{ color: main }}>
