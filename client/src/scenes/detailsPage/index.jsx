@@ -85,6 +85,10 @@ const DetailsPage = () => {
   };
 
   const addCommentHandler = async () => {
+    if (!isAuth) {
+      return navigate('/login');
+    }
+
     const response = await fetch(
       `http://localhost:3001/posts/${postId}/comments`,
       {
@@ -211,7 +215,7 @@ const DetailsPage = () => {
             value={comment}
             onChange={(e) => setComment(e.target.value)}
           />
-          <IconButton onClick={addCommentHandler}>
+          <IconButton onClick={addCommentHandler} disabled={!comment}>
             <AddComment />
           </IconButton>
         </FlexBetween>
