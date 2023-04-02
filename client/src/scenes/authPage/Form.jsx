@@ -17,6 +17,7 @@ import { registerSchema, loginSchema } from './validationSchemas';
 import { initialValuesRegister, initialValuesLogin } from './formValues';
 import PlacesAutocomplete from './PlacesAutocomplete';
 import { useJsApiLoader } from '@react-google-maps/api';
+import * as authService from 'services/authService';
 
 const Form = () => {
   const { palette } = useTheme();
@@ -43,44 +44,43 @@ const Form = () => {
     }
     formData.append('picturePath', values.picture.name);
 
-    const authDataResponse = await fetch(
-      'http://localhost:3001/auth/register',
-      {
-        method: 'POST',
-        body: formData,
-      }
-    );
-    const authData = await authDataResponse.json();
+    try {
+      const authData = await authService.register(formData);
 
-    onSubmitProps.resetForm();
-    if (authData) {
-      dispatch(
-        setLogin({
-          user: authData.user,
-          token: authData.token,
-        })
-      );
-      navigate('/');
+      onSubmitProps.resetForm();
+      if (authData) {
+        dispatch(
+          setLogin({
+            user: authData.user,
+            token: authData.token,
+          })
+        );
+        navigate('/');
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
   const login = async (values, onSubmitProps) => {
-    const authDataResponse = await fetch('http://localhost:3001/auth/login', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(values),
-    });
-    const authData = await authDataResponse.json();
+    try {
+      const authData = await authService.login({
+        email: values.email,
+        password: values.password,
+      });
 
-    onSubmitProps.resetForm();
-    if (authData) {
-      dispatch(
-        setLogin({
-          user: authData.user,
-          token: authData.token,
-        })
-      );
-      navigate('/');
+      onSubmitProps.resetForm();
+      if (authData) {
+        dispatch(
+          setLogin({
+            user: authData.user,
+            token: authData.token,
+          })
+        );
+        navigate('/');
+      }
+    } catch (error) {
+      console.error(error);
     }
   };
 
