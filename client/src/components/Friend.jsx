@@ -1,10 +1,11 @@
-import { PersonAddOutlined, PersonRemoveOutlined } from "@mui/icons-material";
-import { Box, useTheme, Typography, IconButton } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
-import { setFriends } from "state";
-import FlexBetween from "./FlexBetween";
-import UserImage from "./UserImage";
+import { PersonAddOutlined, PersonRemoveOutlined } from '@mui/icons-material';
+import { Box, useTheme, Typography, IconButton } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
+import { setFriends } from 'state';
+import FlexBetween from './FlexBetween';
+import UserImage from './UserImage';
+import * as userService from 'services/userService';
 
 const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const dispatch = useDispatch();
@@ -26,21 +27,15 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
 
   const patchFriend = async () => {
     if (!isAuth) {
-      return navigate("/login");
+      return navigate('/login');
     }
 
-    const response = await fetch(
-      `http://localhost:3001/users/${user._id}/${friendId}`,
-      {
-        method: "PATCH",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    const data = await response.json();
-    dispatch(setFriends({ friends: data }));
+    try {
+      const data = await userService.patchFriend(user._id, friendId);
+      dispatch(setFriends({ friends: data }));
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -57,9 +52,9 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
             variant="h5"
             fontWeight="500"
             sx={{
-              "&:hover": {
+              '&:hover': {
                 color: palette.primary.light,
-                cursor: "pointer",
+                cursor: 'pointer',
               },
             }}
           >
@@ -73,7 +68,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
       {!isOwner && (
         <IconButton
           onClick={patchFriend}
-          sx={{ backgroundColor: primaryLight, p: "0.6rem" }}
+          sx={{ backgroundColor: primaryLight, p: '0.6rem' }}
         >
           {isFriend ? (
             <PersonRemoveOutlined sx={{ color: primaryDark }} />
