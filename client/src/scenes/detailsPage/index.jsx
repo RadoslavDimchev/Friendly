@@ -27,6 +27,8 @@ import {
 import FlexBetween from 'components/FlexBetween';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { patch } from 'services/requester';
+import { likePost } from 'services/postService';
 
 const DetailsPage = () => {
   const navigate = useNavigate();
@@ -59,15 +61,7 @@ const DetailsPage = () => {
       return navigate('/login');
     }
 
-    const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
-      method: 'PATCH',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ userId: user._id }),
-    });
-    const updatedPost = await response.json();
+    const updatedPost = await likePost(postId, { userId: user._id });
     setPost(updatedPost);
   };
 
