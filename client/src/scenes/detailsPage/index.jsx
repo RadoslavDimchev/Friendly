@@ -6,6 +6,7 @@ import {
   ShareOutlined,
   Edit,
   Delete,
+  AddComment,
 } from '@mui/icons-material';
 import Friend from 'components/Friend';
 import WidgetWrapper from 'components/WidgetWrapper';
@@ -21,6 +22,7 @@ import {
   DialogTitle,
   Button,
   DialogActions,
+  InputBase,
 } from '@mui/material';
 import FlexBetween from 'components/FlexBetween';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -36,10 +38,11 @@ const DetailsPage = () => {
   const { postId } = useParams();
   const isOwner = isAuth && user._id === post.userId;
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [comment, setComment] = useState('');
 
-  const { palette } = useTheme();
-  const main = palette.neutral.main;
-  const primary = palette.primary.main;
+  const theme = useTheme();
+  const main = theme.palette.neutral.main;
+  const primary = theme.palette.primary.main;
 
   useEffect(() => {
     const getPost = async () => {
@@ -79,6 +82,26 @@ const DetailsPage = () => {
     });
     closeDeleteDialog();
     navigate('/');
+  };
+
+  const addCommentHandler = async () => {
+    const response = await fetch(
+      `http://localhost:3001/posts/${postId}/comments`,
+      {
+        method: 'PATCH',
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          fullName: `${user.firstName} ${user.lastName}`,
+          comment,
+        }),
+      }
+    );
+    const updatedPost = await response.json();
+    setPost(updatedPost);
+    setComment('');
   };
 
   if (!post._id) {
@@ -176,15 +199,31 @@ const DetailsPage = () => {
         </IconButton>
       </FlexBetween>
       <Box mt="0.5rem">
+        <FlexBetween
+          backgroundColor={theme.palette.neutral.light}
+          borderRadius="9px"
+          gap="3rem"
+          padding="0.1rem 1.5rem"
+        >
+          <InputBase
+            placeholder="Add comment..."
+            multiline
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+          />
+          <IconButton onClick={addCommentHandler}>
+            <AddComment />
+          </IconButton>
+        </FlexBetween>
+
         {post.comments?.map((comment, i) => (
           <Box key={i}>
-            <Divider />
+            {i > 0 ? <Divider /> : null}
             <Typography sx={{ color: main, m: '0.5rem 0', pl: '1rem' }}>
-              {comment}
+              {comment.fullName}: {comment.comment}
             </Typography>
           </Box>
         ))}
-        <Divider />
       </Box>
     </WidgetWrapper>
   );
