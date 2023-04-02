@@ -1,4 +1,5 @@
 import { store } from 'index';
+import { setLogout } from 'state';
 
 const BASE_URL = 'http://localhost:3001';
 
@@ -20,9 +21,23 @@ const request = async (method, url, data) => {
 
   try {
     const response = await fetch(`${BASE_URL}${url}`, options);
-    return await response.json();
+
+    if (response.status === 204) {
+      return response;
+    }
+
+    const result = await response.json();
+
+    if (!response.ok) {
+      if (response.status === 403) {
+        store.dispatch(setLogout());
+      }
+      throw new Error(result.message || result.error);
+    }
+
+    return result;
   } catch (error) {
-    console.error(error.message);
+    throw error;
   }
 };
 
