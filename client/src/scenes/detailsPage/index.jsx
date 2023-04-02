@@ -27,8 +27,7 @@ import {
 import FlexBetween from 'components/FlexBetween';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
-import { patch } from 'services/requester';
-import { likePost } from 'services/postService';
+import * as postService from 'services/postService';
 
 const DetailsPage = () => {
   const navigate = useNavigate();
@@ -47,13 +46,7 @@ const DetailsPage = () => {
   const primary = theme.palette.primary.main;
 
   useEffect(() => {
-    const getPost = async () => {
-      const response = await fetch(`http://localhost:3001/posts/${postId}`);
-      const data = await response.json();
-      setPost(data);
-    };
-
-    getPost();
+    postService.getById(postId).then((post) => setPost(post));
   }, [postId]);
 
   const patchLike = async () => {
@@ -61,19 +54,16 @@ const DetailsPage = () => {
       return navigate('/login');
     }
 
-    const updatedPost = await likePost(postId, { userId: user._id });
-    setPost(updatedPost);
+    postService
+      .like(postId, { userId: user._id })
+      .then((updatedPost) => setPost(updatedPost))
+      .catch((err) => navigate('/login'));
   };
 
   const closeDeleteDialog = () => setIsDeleteDialogOpen(false);
 
   const deletePostHandler = async () => {
-    await fetch(`http://localhost:3001/posts/${postId}`, {
-      method: 'DELETE',
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    await postService.deleteById(postId);
     closeDeleteDialog();
     navigate('/');
   };
