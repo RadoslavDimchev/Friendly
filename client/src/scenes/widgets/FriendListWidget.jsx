@@ -3,7 +3,7 @@ import Friend from 'components/Friend';
 import WidgetWrapper from 'components/WidgetWrapper';
 import { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { setFriends } from 'state';
 import * as userService from 'services/userService';
 
@@ -35,7 +35,10 @@ const FriendListWidget = () => {
     getFriends();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const isCurrentUserFriends = !userId || (isAuth && user._id === userId);
+  const isUserAtHomePage = !userId && isAuth;
+  const friendsToMap = isUserAtHomePage
+    ? user.friends.slice(-3).reverse()
+    : friendsOfUsers;
 
   return (
     <WidgetWrapper>
@@ -45,10 +48,22 @@ const FriendListWidget = () => {
         fontWeight="500"
         sx={{ mb: '1.5rem' }}
       >
-        {userId ? 'Friend List' : 'Recent Friends'}
+        {isUserAtHomePage ? 'Recent Friends - ' : 'Friend List'}
+        {isUserAtHomePage && (
+          <Link
+            style={{
+              fontSize: '14px',
+              textDecoration: 'none',
+              color: palette.neutral.medium,
+            }}
+            to={`profile/${user._id}/friends`}
+          >
+            view all
+          </Link>
+        )}
       </Typography>
       <Box display="flex" flexDirection="column" gap="1.5rem">
-        {(isCurrentUserFriends ? user.friends : friendsOfUsers).map(
+        {friendsToMap.map(
           (friend) =>
             friend._id && (
               <Friend
