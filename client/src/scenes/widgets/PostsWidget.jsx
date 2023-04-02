@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { setPosts } from 'state';
 import PostWidget from './PostWidget';
+import * as postService from 'services/postService';
 
 const PostsWidget = () => {
   const dispatch = useDispatch();
@@ -38,23 +39,23 @@ const PostsWidget = () => {
   };
 
   const getPosts = async () => {
-    const response = await fetch('http://localhost:3001/posts');
-    let data = await response.json();
-    const sortedData = sortData(data);
-    dispatch(setPosts({ posts: sortedData }));
+    try {
+      const data = await postService.getAll();
+      const sortedData = sortData(data);
+      dispatch(setPosts({ posts: sortedData }));
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const getUserPosts = async () => {
-    const response = await fetch(
-      `http://localhost:3001/posts/${params.userId}/posts`,
-      {
-        method: 'GET',
-        headers: { Authorization: `Bearer ${token}` },
-      }
-    );
-    const data = await response.json();
-    const sortedData = sortData(data);
-    dispatch(setPosts({ posts: sortedData }));
+    try {
+      const data = await postService.getAllForUser(params.userId);
+      const sortedData = sortData(data);
+      dispatch(setPosts({ posts: sortedData }));
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {

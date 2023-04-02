@@ -25,6 +25,7 @@ import Dropzone from 'react-dropzone';
 import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { setPosts } from 'state';
+import * as postService from 'services/postService';
 
 const MyPostWidget = () => {
   const dispatch = useDispatch();
@@ -62,18 +63,17 @@ const MyPostWidget = () => {
       formData.append('picturePath', image.name);
     }
 
-    const response = await fetch('http://localhost:3001/posts', {
-      method: 'POST',
-      headers: { Authorization: `Bearer ${token}` },
-      body: formData,
-    });
-    const posts = await response.json();
-    const sortedPosts = sortPosts(posts);
-    dispatch(setPosts({ posts: sortedPosts }));
+    try {
+      const posts = await postService.create(formData);
+      const sortedPosts = sortPosts(posts);
+      dispatch(setPosts({ posts: sortedPosts }));
 
-    setImage(null);
-    setPost('');
-    setIsImage(false);
+      setImage(null);
+      setPost('');
+      setIsImage(false);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
