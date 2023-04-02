@@ -1,18 +1,18 @@
-import { useTheme } from "@emotion/react";
+import { useTheme } from '@emotion/react';
 import {
   ChatBubbleOutlineOutlined,
   FavoriteBorderOutlined,
   FavoriteOutlined,
   ShareOutlined,
-} from "@mui/icons-material";
-import Friend from "components/Friend";
-import WidgetWrapper from "components/WidgetWrapper";
-import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { setPost } from "state";
-import { Typography, IconButton, Box, Divider } from "@mui/material";
-import FlexBetween from "components/FlexBetween";
-import { Link, useNavigate } from "react-router-dom";
+} from '@mui/icons-material';
+import Friend from 'components/Friend';
+import WidgetWrapper from 'components/WidgetWrapper';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { setPost } from 'state';
+import { Typography, IconButton, Box, Divider } from '@mui/material';
+import FlexBetween from 'components/FlexBetween';
+import { Link, useNavigate } from 'react-router-dom';
 
 const PostWidget = ({
   postId,
@@ -23,7 +23,7 @@ const PostWidget = ({
   userPicturePath,
   likes,
   comments,
-  occupation
+  occupation,
 }) => {
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
@@ -39,14 +39,14 @@ const PostWidget = ({
 
   const patchLike = async () => {
     if (!isAuth) {
-      return navigate("/login");
+      return navigate('/login');
     }
 
     const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
-      method: "PATCH",
+      method: 'PATCH',
       headers: {
         Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ userId: user._id }),
     });
@@ -62,11 +62,11 @@ const PostWidget = ({
         subtitle={occupation}
         userPicturePath={userPicturePath}
       />
-      <Typography color={main} sx={{ mt: "1rem" }}>
-        {description.split(" ").slice(0, 10).join(" ")}
+      <Typography color={main} sx={{ mt: '1rem' }}>
+        {description.split(' ').slice(0, 10).join(' ')}
         <Link
           to={`/posts/${postId}`}
-          style={{ color: main, marginLeft: "0.3rem" }}
+          style={{ color: main, marginLeft: '0.3rem' }}
         >
           view details...
         </Link>
@@ -77,7 +77,7 @@ const PostWidget = ({
           alt="post"
           width="100%"
           height="auto"
-          style={{ borderRadius: "0.75rem", marginTop: "0.75rem" }}
+          style={{ borderRadius: '0.75rem', marginTop: '0.75rem' }}
         />
       )}
       <FlexBetween mt="0.25rem">
@@ -107,15 +107,29 @@ const PostWidget = ({
       </FlexBetween>
       {isComments && (
         <Box mt="0.5rem">
-          {comments.map((comment, i) => (
-            <Box key={`${name}-${i}`}>
-              <Divider />
-              <Typography sx={{ color: main, m: "0.5rem 0", pl: "1rem" }}>
-                {comment}
+          {comments.length === 0 && (
+            <Typography sx={{ color: main, m: '0.5rem 0', pl: '1rem' }}>
+              No comments,{' '}
+              <Link to={`/posts/${postId}`} style={{ color: main, ml: '1rem' }}>
+                be the first one{' '}
+              </Link>
+            </Typography>
+          )}
+          {comments.slice(0, 3).map((comment, i) => (
+            <Box key={i}>
+              {i > 0 ? <Divider /> : null}
+              <Typography sx={{ color: main, m: '0.5rem 0', pl: '1rem' }}>
+                {comment.fullName}: {comment.comment}
               </Typography>
             </Box>
           ))}
-          <Divider />
+          {comments.length > 3 && (
+            <Typography sx={{ m: '0.5rem 0', pl: '1rem' }}>
+              <Link to={`/posts/${postId}`} style={{ color: main }}>
+                view all comments...
+              </Link>
+            </Typography>
+          )}
         </Box>
       )}
     </WidgetWrapper>
