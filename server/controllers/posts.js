@@ -16,7 +16,7 @@ export const createPost = async (req, res) => {
       userPicturePath: user.picturePath,
       picturePath,
       likes: {},
-      comments: []
+      comments: [],
     });
     await newPost.save();
 
@@ -87,8 +87,26 @@ export const editPost = async (req, res) => {
   try {
     const { postId } = req.params;
     const { description, picturePath } = req.body;
-    const updatedPost = await Post.findByIdAndUpdate(postId, { description, picturePath });
+    const updatedPost = await Post.findByIdAndUpdate(postId, {
+      description,
+      picturePath,
+    });
     res.status(200).json(updatedPost);
+  } catch (error) {
+    res.status(404).json({ message: error.message });
+  }
+};
+
+export const addCommentonPost = async (req, res) => {
+  try {
+    const { postId } = req.params;
+    const { fullName, comment } = req.body;
+    const post = await Post.findById(postId);
+
+    post.comments.unshift({ fullName, comment });
+    await post.save();
+
+    res.status(200).json(post);
   } catch (error) {
     res.status(404).json({ message: error.message });
   }
