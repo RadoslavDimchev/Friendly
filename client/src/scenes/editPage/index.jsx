@@ -24,14 +24,14 @@ import {
   MoreHorizOutlined,
 } from '@mui/icons-material';
 import Dropzone from 'react-dropzone';
+import * as postService from 'services/postService';
 
 const EditPage = () => {
   const navigate = useNavigate();
   const { postId } = useParams();
   const [post, setPost] = useState({});
   const [isImage, setIsImage] = useState(false);
-  const [image, setImage] = useState(null);
-  const token = useSelector((state) => state.token);
+  const [image, setImage] = useState({});
   const { picturePath } = useSelector((state) => state.user);
   const isNonMobileScreens = useMediaQuery('(min-width: 1000px)');
 
@@ -41,11 +41,14 @@ const EditPage = () => {
 
   useEffect(() => {
     const getPost = async () => {
-      const response = await fetch(`http://localhost:3001/posts/${postId}`);
-      const data = await response.json();
-      setPost(data);
-      setIsImage(!!data.picturePath);
-      setImage({ name: data.picturePath });
+      try {
+        const post = await postService.getById(postId);
+        setPost(post);
+        setIsImage(!!post.picturePath);
+        setImage({ name: post.picturePath || '' });
+      } catch (error) {
+        console.error(error);
+      }
     };
 
     getPost();
@@ -54,20 +57,15 @@ const EditPage = () => {
   const handleEdit = async () => {
     const formData = new FormData();
     formData.append('description', post.description);
-    if (image) {
-      formData.append('picture', image);
-      formData.append('picturePath', image.name);
-    }
+    formData.append('picture', image);
+    formData.append('picturePath', image?.name || '');
 
-    const response = await fetch(`http://localhost:3001/posts/${postId}/edit`, {
-      method: 'PATCH',
-      headers: { Authorization: `Bearer ${token}` },
-      body: formData,
-    });
-    await response.json();
-    setImage(null);
-    setPost('');
-    navigate(`/posts/${postId}`);
+    try {
+      await postService.edit(postId, formData);
+      navigate(`/posts/${postId}`);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -112,7 +110,7 @@ const EditPage = () => {
                   width="100%"
                 >
                   <input {...getInputProps()} />
-                  {!image ? (
+                  {!image.name ? (
                     <p>Add Image Here</p>
                   ) : (
                     <FlexBetween>
@@ -121,9 +119,9 @@ const EditPage = () => {
                     </FlexBetween>
                   )}
                 </Box>
-                {image && (
+                {image.name && (
                   <IconButton
-                    onClick={() => setImage(null)}
+                    onClick={() => setImage({})}
                     sx={{ width: '15%' }}
                   >
                     <DeleteOutlined />

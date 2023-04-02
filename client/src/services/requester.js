@@ -3,13 +3,15 @@ import { setLogout } from 'state';
 
 const BASE_URL = 'http://localhost:3001';
 
-const request = async (method, url, data) => {
+const request = async (method, url, data, isFormData) => {
   const options = {
     method,
     headers: {},
   };
 
-  if (data) {
+  if (isFormData) {
+    options.body = data;
+  } else if (data) {
     options.headers['Content-Type'] = 'application/json';
     options.body = JSON.stringify(data);
   }

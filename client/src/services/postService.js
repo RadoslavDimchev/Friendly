@@ -10,3 +10,6 @@ export const deleteById = async (postId) => del(`${URL}/${postId}`);
 
 export const addComment = async (postId, data) =>
   patch(`${URL}/${postId}/comments`, data);
+
+  export const edit = async (postId, data) =>
+  patch(`${URL}/${postId}/edit`, data, true);
