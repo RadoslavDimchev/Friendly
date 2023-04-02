@@ -10,7 +10,7 @@ import WidgetWrapper from 'components/WidgetWrapper';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { setPost } from 'state';
-import { Typography, IconButton, Box, Divider } from '@mui/material';
+import { Typography, IconButton, Box } from '@mui/material';
 import FlexBetween from 'components/FlexBetween';
 import { Link, useNavigate } from 'react-router-dom';
 import * as postService from 'services/postService';

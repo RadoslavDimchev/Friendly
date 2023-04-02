@@ -2,7 +2,6 @@ import express from 'express';
 import { verifyToken } from '../middleware/auth.js';
 import {
   getFeedPosts,
-  getUserPosts,
   likePost,
   getPost,
   deletePost,
@@ -13,7 +12,7 @@ const router = express.Router();
 
 // READ
 router.get('/', getFeedPosts);
-router.get('/:userId/posts', getUserPosts);
+router.get('/:userId/posts', getFeedPosts);
 router.get('/:postId', getPost);
 
 // UPDATE

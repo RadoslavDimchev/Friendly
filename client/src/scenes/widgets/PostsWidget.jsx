@@ -16,7 +16,6 @@ import * as postService from 'services/postService';
 const PostsWidget = () => {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.posts);
-  const token = useSelector((state) => state.token);
   const navigate = useNavigate();
   const location = useLocation();
   const params = useParams();
@@ -24,46 +23,26 @@ const PostsWidget = () => {
   const [sortedBy, setSortedBy] = useState(queryString.get('sort') || 'recent');
 
   const sortData = (data) => {
-    if (sortedBy === 'recent') {
-      navigate({ search: '' });
-      return data.sort((a, b) =>
-        a.createdAt > b.createdAt ? -1 : a.createdAt < b.createdAt ? 1 : 0
-      );
-    } else {
-      queryString.set('sort', 'likes');
-      navigate({ search: queryString.toString() });
-      return data.sort(
-        (a, b) => Object.keys(b.likes).length - Object.keys(a.likes).length
-      );
-    }
-  };
-
-  const getPosts = async () => {
-    try {
-      const data = await postService.getAll();
-      const sortedData = sortData(data);
-      dispatch(setPosts({ posts: sortedData }));
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const getUserPosts = async () => {
-    try {
-      const data = await postService.getAllForUser(params.userId);
-      const sortedData = sortData(data);
-      dispatch(setPosts({ posts: sortedData }));
-    } catch (error) {
-      console.error(error);
-    }
+    queryString.set('sort', 'likes');
+    navigate({ search: queryString.toString() });
+    return data.sort(
+      (a, b) => Object.keys(b.likes).length - Object.keys(a.likes).length
+    );
   };
 
   useEffect(() => {
-    if (location.pathname === '/') {
-      getPosts();
-    } else {
-      getUserPosts();
-    }
+    const getPosts = async () => {
+      try {
+        const data = await postService.getAll(params.userId);
+        dispatch(
+          setPosts({ posts: sortedBy === 'likes' ? sortData(data) : data })
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    getPosts();
   }, [params.userId, sortedBy]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (

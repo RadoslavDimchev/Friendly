@@ -1,9 +1,8 @@
 import { del, get, patch, post } from './requester';
 const URL = '/posts';
 
-export const getAll = async () => get(URL);
-
-export const getAllForUser = async (userId) => get(`${URL}/${userId}/posts`);
+export const getAll = async (userId) =>
+  get(userId ? `${URL}/${userId}/posts` : URL);
 
 export const getById = async (postId) => get(`${URL}/${postId}`);
 
