@@ -1,10 +1,11 @@
-import { useTheme, Typography, Box } from "@mui/material";
-import Friend from "components/Friend";
-import WidgetWrapper from "components/WidgetWrapper";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
-import { setFriends } from "state";
+import { useTheme, Typography, Box } from '@mui/material';
+import Friend from 'components/Friend';
+import WidgetWrapper from 'components/WidgetWrapper';
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import { setFriends } from 'state';
+import * as userService from 'services/userService';
 
 const FriendListWidget = () => {
   const dispatch = useDispatch();
@@ -15,32 +16,18 @@ const FriendListWidget = () => {
   const [friendsOfUsers, setFriendsOfUsers] = useState([]);
   const { userId } = useParams();
 
-  const getFriends = async () => {
-    let response;
-    if (user && !userId) {
-      response = await fetch(
-        `http://localhost:3001/users/${user._id}/friends`,
-        {
-          method: "GET",
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-    } else {
-      response = await fetch(`http://localhost:3001/users/${userId}/friends`, {
-        method: "GET",
-        headers: { Authorization: `Bearer ${token}` },
-      });
-    }
-
-    const data = await response.json();
-    if (!userId) {
-      dispatch(setFriends({ friends: data }));
-    } else {
-      setFriendsOfUsers(data);
-    }
-  };
-
   useEffect(() => {
+    const getFriends = async () => {
+      const friends = await userService.getAllUserFriends(
+        user && !userId ? user._id : userId
+      );
+      if (!userId) {
+        dispatch(setFriends({ friends }));
+      } else {
+        setFriendsOfUsers(friends);
+      }
+    };
+
     getFriends();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -57,9 +44,9 @@ const FriendListWidget = () => {
         variant="h5"
         color={palette.neutral.dark}
         fontWeight="500"
-        sx={{ mb: "1.5rem" }}
+        sx={{ mb: '1.5rem' }}
       >
-        {userId ? "Friend List" : "Recent Friends"}
+        {userId ? 'Friend List' : 'Recent Friends'}
       </Typography>
       <Box display="flex" flexDirection="column" gap="1.5rem">
         {friends.map((friend) => (
