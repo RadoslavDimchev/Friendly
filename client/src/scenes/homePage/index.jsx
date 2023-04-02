@@ -22,7 +22,7 @@ const HomePage = () => {
     >
       <Box flexBasis={isNonMobileScreens ? "26%" : undefined}>
         {isAuth && (
-          <UserWidget userId={user._id} picturePath={user.picturePath} />
+          <UserWidget user={user} />
         )}
       </Box>
 

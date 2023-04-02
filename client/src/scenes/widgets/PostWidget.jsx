@@ -13,6 +13,7 @@ import { setPost } from 'state';
 import { Typography, IconButton, Box, Divider } from '@mui/material';
 import FlexBetween from 'components/FlexBetween';
 import { Link, useNavigate } from 'react-router-dom';
+import * as postService from 'services/postService';
 
 const PostWidget = ({
   postId,
@@ -42,16 +43,12 @@ const PostWidget = ({
       return navigate('/login');
     }
 
-    const response = await fetch(`http://localhost:3001/posts/${postId}/like`, {
-      method: 'PATCH',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ userId: user._id }),
-    });
-    const updatedPost = await response.json();
-    dispatch(setPost({ post: updatedPost }));
+    try {
+      const updatedPost = await postService.like(postId, { userId: user._id });
+      dispatch(setPost({ post: updatedPost }));
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

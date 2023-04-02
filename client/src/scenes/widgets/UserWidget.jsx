@@ -2,36 +2,33 @@ import {
   ManageAccountsOutlined,
   WorkOutlineOutlined,
 } from '@mui/icons-material';
-import { Box, Typography, Divider, useTheme, Button } from '@mui/material';
+import { Box, Typography, Divider, useTheme } from '@mui/material';
 import FlexBetween from 'components/FlexBetween';
 import UserImage from 'components/UserImage';
 import WidgetWrapper from 'components/WidgetWrapper';
-import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-const UserWidget = ({ userId, picturePath }) => {
-  const [user, setUser] = useState(null);
+const UserWidget = ({ user }) => {
   const { palette } = useTheme();
   const navigate = useNavigate();
   const dark = palette.neutral.dark;
   const medium = palette.neutral.medium;
   const main = palette.neutral.main;
 
-  useEffect(() => {
-    const getUser = async () => {
-      const response = await fetch(`http://localhost:3001/users/${userId}`);
-      const data = await response.json();
-      setUser(data);
-    };
-
-    getUser();
-  }, [userId]);
-
   if (!user) {
     return null;
   }
 
-  const { firstName, lastName, occupation, viewedProfile, impressions } = user;
+  const {
+    _id,
+    firstName,
+    lastName,
+    occupation,
+    viewedProfile,
+    impressions,
+    picturePath,
+    linkedin,
+  } = user;
 
   return (
     <WidgetWrapper>
@@ -50,12 +47,12 @@ const UserWidget = ({ userId, picturePath }) => {
                   cursor: 'pointer',
                 },
               }}
-              onClick={() => navigate(`/profile/${userId}`)}
+              onClick={() => navigate(`/profile/${_id}`)}
             >
               {firstName} {lastName}
             </Typography>
             <Link
-              to={`/profile/${userId}/friends`}
+              to={`/profile/${_id}/friends`}
               style={{
                 textDecoration: 'none',
                 color: palette.primary.main,
@@ -105,8 +102,8 @@ const UserWidget = ({ userId, picturePath }) => {
         </Typography>
         <FlexBetween gap="1rem">
           <FlexBetween gap="1rem">
-            {user.linkedin ? (
-              <Link to={user.linkedin} target="_blank">
+            {linkedin ? (
+              <Link to={linkedin} target="_blank">
                 <img
                   src="/assets/linkedin.png"
                   alt="linkedin"

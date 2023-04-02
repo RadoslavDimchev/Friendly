@@ -39,7 +39,7 @@ const ProfilePage = () => {
       justifyContent="center"
     >
       <Box flexBasis={isNonMobileScreens ? '26%' : undefined}>
-        <UserWidget userId={userId} picturePath={user.picturePath} />
+        <UserWidget user={user} />
         <GoogleMapsWidget user={user} />
       </Box>
       <Box
