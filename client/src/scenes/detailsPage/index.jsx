@@ -158,7 +158,7 @@ const DetailsPage = () => {
       </Typography>
       {post.picturePath && (
         <img
-          src={`http://localhost:3001/assets/${post.picturePath}`}
+          src={`${process.env.REACT_APP_ASSETS_ADDRESS}${post.picturePath}`}
           alt="post"
           width="100%"
           height="auto"

@@ -19,7 +19,7 @@ const AdvertWidget = () => {
       <img
         width="100%"
         height="auto"
-        src="http://localhost:3001/assets/radoslav-advert.jpg"
+        src={`${process.env.REACT_APP_ASSETS_ADDRESS}radoslav-advert.jpg`}
         alt="advert"
         style={{ borderRadius: '0.75rem', margin: '0.75rem 0' }}
       />

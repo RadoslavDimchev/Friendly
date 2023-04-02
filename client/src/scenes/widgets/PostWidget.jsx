@@ -70,7 +70,7 @@ const PostWidget = ({
       </Typography>
       {picturePath && (
         <img
-          src={`http://localhost:3001/assets/${picturePath}`}
+          src={`${process.env.REACT_APP_ASSETS_ADDRESS}${picturePath}`}
           alt="post"
           width="100%"
           height="auto"
