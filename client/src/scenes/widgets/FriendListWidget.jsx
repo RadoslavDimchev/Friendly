@@ -18,13 +18,17 @@ const FriendListWidget = () => {
 
   useEffect(() => {
     const getFriends = async () => {
-      const friends = await userService.getAllUserFriends(
-        user && !userId ? user._id : userId
-      );
-      if (!userId) {
-        dispatch(setFriends({ friends }));
-      } else {
-        setFriendsOfUsers(friends);
+      try {
+        const friends = await userService.getAllUserFriends(
+          user && !userId ? user._id : userId
+        );
+        if (!userId) {
+          dispatch(setFriends({ friends }));
+        } else {
+          setFriendsOfUsers(friends);
+        }
+      } catch (error) {
+        console.error(error);
       }
     };
 
