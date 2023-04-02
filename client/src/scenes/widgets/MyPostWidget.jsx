@@ -23,6 +23,7 @@ import WidgetWrapper from 'components/WidgetWrapper';
 import { useState } from 'react';
 import Dropzone from 'react-dropzone';
 import { useDispatch, useSelector } from 'react-redux';
+import { useLocation } from 'react-router-dom';
 import { setPosts } from 'state';
 
 const MyPostWidget = () => {
@@ -37,6 +38,20 @@ const MyPostWidget = () => {
   const mediumMain = palette.neutral.mediumMain;
   const medium = palette.neutral.medium;
   const isPostBtnDisabled = !post && !image ? true : false;
+  const location = useLocation();
+  const queryString = new URLSearchParams(location.search);
+
+  const sortPosts = (posts) => {
+    if (queryString.has('sort')) {
+      return posts.sort(
+        (a, b) => Object.keys(b.likes).length - Object.keys(a.likes).length
+      );
+    } else {
+      return posts.sort((a, b) =>
+        a.createdAt > b.createdAt ? -1 : a.createdAt < b.createdAt ? 1 : 0
+      );
+    }
+  };
 
   const handlePost = async () => {
     const formData = new FormData();
@@ -53,7 +68,9 @@ const MyPostWidget = () => {
       body: formData,
     });
     const posts = await response.json();
-    dispatch(setPosts({ posts }));
+    const sortedPosts = sortPosts(posts);
+    dispatch(setPosts({ posts: sortedPosts }));
+
     setImage(null);
     setPost('');
     setIsImage(false);

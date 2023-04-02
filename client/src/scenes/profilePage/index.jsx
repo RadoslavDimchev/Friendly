@@ -1,7 +1,6 @@
 import { Box, useMediaQuery } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
-import Navbar from 'scenes/navbar';
 import FriendListWidget from 'scenes/widgets/FriendListWidget';
 import GoogleMapsWidget from 'scenes/widgets/GoogleMapsWidget';
 import PostsWidget from 'scenes/widgets/PostsWidget';
