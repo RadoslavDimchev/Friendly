@@ -46,7 +46,10 @@ const DetailsPage = () => {
   const primary = theme.palette.primary.main;
 
   useEffect(() => {
-    postService.getById(postId).then((post) => setPost(post));
+    postService
+      .getById(postId)
+      .then((post) => setPost(post))
+      .catch((error) => console.error(error));
   }, [postId]);
 
   const patchLike = async () => {
@@ -54,16 +57,23 @@ const DetailsPage = () => {
       return navigate('/login');
     }
 
-    postService
-      .like(postId, { userId: user._id })
-      .then((updatedPost) => setPost(updatedPost))
-      .catch((err) => navigate('/login'));
+    try {
+      const updatedPost = await postService.like(postId, { userId: user._id });
+      setPost(updatedPost);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const closeDeleteDialog = () => setIsDeleteDialogOpen(false);
 
   const deletePostHandler = async () => {
-    await postService.deleteById(postId);
+    try {
+      await postService.deleteById(postId);
+    } catch (error) {
+      console.error(error);
+    }
+
     closeDeleteDialog();
     navigate('/');
   };
@@ -73,22 +83,16 @@ const DetailsPage = () => {
       return navigate('/login');
     }
 
-    const response = await fetch(
-      `http://localhost:3001/posts/${postId}/comments`,
-      {
-        method: 'PATCH',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          fullName: `${user.firstName} ${user.lastName}`,
-          comment,
-        }),
-      }
-    );
-    const updatedPost = await response.json();
-    setPost(updatedPost);
+    try {
+      const updatedPost = await postService.addComment(postId, {
+        fullName: `${user.firstName} ${user.lastName}`,
+        comment,
+      });
+      setPost(updatedPost);
+    } catch (error) {
+      console.error(error);
+    }
+
     setComment('');
   };
 
