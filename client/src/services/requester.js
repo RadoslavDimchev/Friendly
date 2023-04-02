@@ -1,8 +1,6 @@
-import { store } from "index";
+import { store } from 'index';
 
-const BASE_URL = `http://localhost:${
-  process.env.REACT_APP_URL_PORT || process.env.REACT_APP_URL_PORT_ALTERNATIVE
-}`;
+const BASE_URL = 'http://localhost:3001';
 
 const request = async (method, url, data) => {
   const options = {
