@@ -4,6 +4,7 @@ import {
   InputLabel,
   MenuItem,
   Select,
+  Typography,
 } from '@mui/material';
 import { Stack } from '@mui/system';
 import { useEffect, useState } from 'react';
@@ -75,32 +76,24 @@ const PostsWidget = () => {
           </Select>
         </FormControl>
       </Stack>
-      {posts.map(
-        ({
-          _id,
-          userId,
-          firstName,
-          lastName,
-          description,
-          picturePath,
-          userPicturePath,
-          likes,
-          comments,
-          occupation,
-        }) => (
+
+      {posts.length === 0 ? (
+        <Typography>Looks like there are no posts here yet!</Typography>
+      ) : (
+        posts.map((post) => (
           <PostWidget
-            key={_id}
-            postId={_id}
-            postUserId={userId}
-            name={`${firstName} ${lastName}`}
-            description={description}
-            picturePath={picturePath}
-            userPicturePath={userPicturePath}
-            likes={likes}
-            comments={comments}
-            occupation={occupation}
+            key={post._id}
+            postId={post._id}
+            postUserId={post.userId}
+            name={`${post.firstName} ${post.lastName}`}
+            description={post.description}
+            picturePath={post.picturePath}
+            userPicturePath={post.userPicturePath}
+            likes={post.likes}
+            comments={post.comments}
+            occupation={post.occupation}
           />
-        )
+        ))
       )}
     </>
   );
