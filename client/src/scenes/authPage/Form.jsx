@@ -18,6 +18,7 @@ import { initialValuesRegister, initialValuesLogin } from './formValues';
 import PlacesAutocomplete from './PlacesAutocomplete';
 import { useJsApiLoader } from '@react-google-maps/api';
 import * as authService from 'services/authService';
+import { useNotificationContext } from 'contexts/NotificationContext';
 
 const Form = () => {
   const { palette } = useTheme();
@@ -27,6 +28,7 @@ const Form = () => {
   const { pathname } = useLocation();
   const isLogin = pathname === '/login';
   const isRegister = pathname === '/register';
+  const { notificationHandler } = useNotificationContext();
 
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -46,8 +48,6 @@ const Form = () => {
 
     try {
       const authData = await authService.register(formData);
-
-      onSubmitProps.resetForm();
       if (authData) {
         dispatch(
           setLogin({
@@ -55,21 +55,30 @@ const Form = () => {
             token: authData.token,
           })
         );
+        onSubmitProps.resetForm();
         navigate('/');
       }
     } catch (error) {
       console.error(error);
+      notificationHandler({
+        open: true,
+        message: error.message,
+        severity: 'error',
+        vertical: 'top',
+        horizontal: 'center',
+      });
     }
   };
 
   const login = async (values, onSubmitProps) => {
+    onSubmitProps.resetForm();
+
     try {
       const authData = await authService.login({
         email: values.email,
         password: values.password,
       });
 
-      onSubmitProps.resetForm();
       if (authData) {
         dispatch(
           setLogin({
@@ -81,6 +90,13 @@ const Form = () => {
       }
     } catch (error) {
       console.error(error);
+      notificationHandler({
+        open: true,
+        message: error.message,
+        severity: 'error',
+        vertical: 'top',
+        horizontal: 'center',
+      });
     }
   };
 
