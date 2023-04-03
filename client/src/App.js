@@ -1,7 +1,7 @@
-import { Box, CssBaseline, ThemeProvider } from '@mui/material';
+import { Box, Button, CssBaseline, ThemeProvider } from '@mui/material';
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import HomePage from 'scenes/homePage';
 import AuthPage from 'scenes/authPage';
 import ProfilePage from 'scenes/profilePage';
@@ -10,6 +10,7 @@ import { themeSettings } from 'theme';
 import Navbar from 'scenes/navbar';
 import DetailsPage from 'scenes/detailsPage';
 import EditPage from 'scenes/editPage';
+import Notification from 'components/Notification';
 
 function App() {
   const mode = useSelector((state) => state.mode);
@@ -22,6 +23,7 @@ function App() {
         <ThemeProvider theme={theme}>
           <CssBaseline />
           <Navbar />
+          <Notification />
           <Box p="5rem 6%" pb="2rem">
             <Routes>
               <Route path="/" element={<HomePage />} />
