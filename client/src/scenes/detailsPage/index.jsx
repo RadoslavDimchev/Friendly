@@ -28,6 +28,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import * as postService from 'services/postService';
 import PostComments from 'components/PostComments';
+import DeletePostDialog from './DeletePostDialog';
 
 const DetailsPage = () => {
   const navigate = useNavigate();
@@ -102,21 +103,11 @@ const DetailsPage = () => {
 
   return (
     <WidgetWrapper maxWidth="500px" margin="2rem auto">
-      <Dialog
-        open={isDeleteDialogOpen}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          Are you sure you want to delete this post?
-        </DialogTitle>
-        <DialogActions>
-          <Button onClick={deletePostHandler}>Yes</Button>
-          <Button onClick={closeDeleteDialog} autoFocus>
-            No
-          </Button>
-        </DialogActions>
-      </Dialog>
+      <DeletePostDialog
+        isDeleteDialogOpen={isDeleteDialogOpen}
+        closeDeleteDialog={closeDeleteDialog}
+        deletePostHandler={deletePostHandler}
+      />
       {isOwner && (
         <Grid
           container
@@ -202,7 +193,7 @@ const DetailsPage = () => {
             multiline
             value={comment}
             onChange={(e) => setComment(e.target.value)}
-            sx={{width: '100%'}}
+            sx={{ width: '100%' }}
           />
           <IconButton onClick={addCommentHandler} disabled={!comment}>
             <AddComment />

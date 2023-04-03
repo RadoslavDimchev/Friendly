@@ -15,6 +15,7 @@ import FlexBetween from 'components/FlexBetween';
 import { Link, useNavigate } from 'react-router-dom';
 import * as postService from 'services/postService';
 import PostComments from 'components/PostComments';
+import { useNotificationContext } from 'contexts/NotificationContext';
 
 const PostWidget = ({
   postId,
@@ -34,6 +35,7 @@ const PostWidget = ({
   const isAuth = Boolean(token);
   const user = useSelector((state) => state.user);
   const likeCount = Object.keys(likes).length;
+  const { notificationHandler } = useNotificationContext();
 
   const { palette } = useTheme();
   const main = palette.neutral.main;
@@ -50,6 +52,17 @@ const PostWidget = ({
     } catch (error) {
       console.error(error);
     }
+  };
+
+  const shareHandler = () => {
+    navigator.clipboard.writeText(`${window.location.href}posts/${postId}`);
+    notificationHandler({
+      open: true,
+      message: 'Copied',
+      severity: 'success',
+      vertical: 'bottom',
+      horizontal: 'center',
+    });
   };
 
   return (
@@ -99,7 +112,7 @@ const PostWidget = ({
           </FlexBetween>
         </FlexBetween>
 
-        <IconButton>
+        <IconButton onClick={shareHandler}>
           <ShareOutlined />
         </IconButton>
       </FlexBetween>
