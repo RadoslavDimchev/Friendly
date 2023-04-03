@@ -45,6 +45,7 @@ const Form = () => {
       formData.append(value, values[value]);
     }
     formData.append('picturePath', values.picture.name);
+    onSubmitProps.resetForm();
 
     try {
       const authData = await authService.register(formData);
@@ -55,7 +56,6 @@ const Form = () => {
             token: authData.token,
           })
         );
-        onSubmitProps.resetForm();
         navigate('/');
       }
     } catch (error) {

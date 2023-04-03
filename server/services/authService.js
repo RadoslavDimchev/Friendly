@@ -14,7 +14,6 @@ export async function register(
   viewedProfile,
   impressions
 ) {
-  console.log(email);
   const existing = await User.findOne({ email }).collation({
     locale: "en",
     strength: 2,
