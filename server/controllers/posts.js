@@ -20,15 +20,16 @@ export const createPost = async (req, res) => {
     });
     await newPost.save();
 
-    const posts = await Post.find();
+    const posts = await Post.find().sort({ createdAt: -1 });
     res.status(201).json(posts);
   } catch (error) {
     res.status(409).json({ message: error.message });
   }
 };
 
-const getSortedByLikesPosts = async (req, res) => {
-  return await Post.aggregate([
+const getPostsSortedByLikes = async (userId) =>
+  Post.aggregate([
+    { $match: userId ? { userId } : {} },
     {
       $addFields: {
         likeCount: { $size: { $objectToArray: "$likes" } },
@@ -38,18 +39,24 @@ const getSortedByLikesPosts = async (req, res) => {
       $sort: { likeCount: -1 },
     },
   ]);
-};
 
 // READ
 export const getFeedPosts = async (req, res) => {
   try {
     const { userId } = req.params;
+    const sort = req.query.sort;
     const props = {};
+    let posts;
     if (userId) {
       props.userId = userId;
     }
 
-    const posts = await Post.find(props).sort({ createdAt: -1 });
+    if (sort) {
+      posts = await getPostsSortedByLikes(userId);
+    } else {
+      posts = await Post.find(props).sort({ createdAt: -1 });
+    }
+
     res.status(200).json(posts);
   } catch (error) {
     res.status(404).json({ message: error.message });

@@ -20,30 +20,35 @@ const PostsWidget = () => {
   const location = useLocation();
   const params = useParams();
   const queryString = new URLSearchParams(location.search);
-  const [sortedBy, setSortedBy] = useState(queryString.get('sort') || 'recent');
-
-  const sortData = (data) => {
-    queryString.set('sort', 'likes');
-    navigate({ search: queryString.toString() });
-    return data.sort(
-      (a, b) => Object.keys(b.likes).length - Object.keys(a.likes).length
-    );
-  };
+  const [sortedBy, setSortedBy] = useState('');
 
   useEffect(() => {
+    setSortedBy(queryString.get('sort') || 'recent');
+
     const getPosts = async () => {
       try {
-        const data = await postService.getAll(params.userId);
-        dispatch(
-          setPosts({ posts: sortedBy === 'likes' ? sortData(data) : data })
+        const posts = await postService.getAll(
+          params.userId,
+          queryString.has('sort') ? 'likes' : ''
         );
+        dispatch(setPosts({ posts }));
       } catch (error) {
         console.error(error);
       }
     };
 
     getPosts();
-  }, [params.userId, sortedBy]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [params.userId, sortedBy, location.search]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const changeSortHandler = (e) => {
+    if (e.target.value === 'likes') {
+      queryString.set('sort', 'likes');
+      navigate({ search: queryString.toString() });
+    } else {
+      navigate({ search: '' });
+    }
+    setSortedBy(e.target.value);
+  };
 
   return (
     <>
@@ -63,7 +68,7 @@ const PostsWidget = () => {
             labelId="demo-simple-select-standard-label"
             id="demo-simple-select-standard"
             value={sortedBy}
-            onChange={(e) => setSortedBy(e.target.value)}
+            onChange={changeSortHandler}
           >
             <MenuItem value="recent">Recent</MenuItem>
             <MenuItem value="likes">Likes</MenuItem>

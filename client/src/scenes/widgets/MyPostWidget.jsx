@@ -23,36 +23,22 @@ import WidgetWrapper from 'components/WidgetWrapper';
 import { useState } from 'react';
 import Dropzone from 'react-dropzone';
 import { useDispatch, useSelector } from 'react-redux';
-import { useLocation } from 'react-router-dom';
 import { setPosts } from 'state';
 import * as postService from 'services/postService';
+import { useNavigate } from 'react-router-dom';
 
 const MyPostWidget = () => {
   const dispatch = useDispatch();
   const [isImage, setIsImage] = useState(false);
   const [image, setImage] = useState(null);
   const [post, setPost] = useState('');
+  const navigate = useNavigate();
   const { palette } = useTheme();
   const { _id, picturePath } = useSelector((state) => state.user);
-  const token = useSelector((state) => state.token);
   const isNonMobileScreens = useMediaQuery('(min-width: 1000px)');
   const mediumMain = palette.neutral.mediumMain;
   const medium = palette.neutral.medium;
   const isPostBtnDisabled = !post && !image ? true : false;
-  const location = useLocation();
-  const queryString = new URLSearchParams(location.search);
-
-  const sortPosts = (posts) => {
-    if (queryString.has('sort')) {
-      return posts.sort(
-        (a, b) => Object.keys(b.likes).length - Object.keys(a.likes).length
-      );
-    } else {
-      return posts.sort((a, b) =>
-        a.createdAt > b.createdAt ? -1 : a.createdAt < b.createdAt ? 1 : 0
-      );
-    }
-  };
 
   const handlePost = async () => {
     const formData = new FormData();
@@ -65,8 +51,8 @@ const MyPostWidget = () => {
 
     try {
       const posts = await postService.create(formData);
-      const sortedPosts = sortPosts(posts);
-      dispatch(setPosts({ posts: sortedPosts }));
+      dispatch(setPosts({ posts }));
+      navigate({ search: '' });
 
       setImage(null);
       setPost('');
