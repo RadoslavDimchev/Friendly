@@ -17,10 +17,6 @@ import {
   Box,
   Grid,
   Tooltip,
-  Dialog,
-  DialogTitle,
-  Button,
-  DialogActions,
   InputBase,
 } from '@mui/material';
 import FlexBetween from 'components/FlexBetween';
@@ -29,6 +25,7 @@ import { useEffect, useState } from 'react';
 import * as postService from 'services/postService';
 import PostComments from 'components/PostComments';
 import DeletePostDialog from './DeletePostDialog';
+import { useNotificationContext } from 'contexts/NotificationContext';
 
 const DetailsPage = () => {
   const navigate = useNavigate();
@@ -41,6 +38,7 @@ const DetailsPage = () => {
   const isOwner = isAuth && user._id === post.userId;
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [comment, setComment] = useState('');
+  const { notificationHandler } = useNotificationContext();
 
   const theme = useTheme();
   const main = theme.palette.neutral.main;
@@ -95,6 +93,17 @@ const DetailsPage = () => {
     }
 
     setComment('');
+  };
+
+  const shareHandler = () => {
+    navigator.clipboard.writeText(window.location.href);
+    notificationHandler({
+      open: true,
+      message: 'Copied',
+      severity: 'success',
+      vertical: 'bottom',
+      horizontal: 'center',
+    });
   };
 
   if (!post._id) {
@@ -177,7 +186,7 @@ const DetailsPage = () => {
           </FlexBetween>
         </FlexBetween>
 
-        <IconButton>
+        <IconButton onClick={shareHandler}>
           <ShareOutlined />
         </IconButton>
       </FlexBetween>
