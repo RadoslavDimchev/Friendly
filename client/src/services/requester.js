@@ -1,6 +1,8 @@
 import { store } from 'index';
 import { setLogout } from 'state';
 
+const BASE_URL = 'http://localhost:3001';
+
 const request = async (method, url, data, isFormData) => {
   const options = {
     method,
@@ -20,10 +22,7 @@ const request = async (method, url, data, isFormData) => {
   }
 
   try {
-    const response = await fetch(
-      `${process.env.REACT_APP_API_URL}${url}`,
-      options
-    );
+    const response = await fetch(`${BASE_URL}${url}`, options);
 
     if (response.status === 204) {
       return response;

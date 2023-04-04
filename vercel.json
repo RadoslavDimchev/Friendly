@@ -1,8 +1,0 @@
-{
-  "rewrites": [
-    {
-      "source": "/server/index/(.*)",
-      "destination": "/index"
-    }
-  ]
-}
