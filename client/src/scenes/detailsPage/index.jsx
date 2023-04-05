@@ -209,7 +209,7 @@ const DetailsPage = () => {
           </IconButton>
         </FlexBetween>
 
-        <PostComments comments={post.comments} postId={postId} main={main} />
+        <PostComments comments={post.comments} postId={postId} main={main} isFromDetails />
       </Box>
     </WidgetWrapper>
   );

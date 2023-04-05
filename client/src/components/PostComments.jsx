@@ -1,25 +1,26 @@
-import { Box, Divider, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Box, Divider, Typography } from '@mui/material';
+import { Link } from 'react-router-dom';
 
-const PostComments = ({ comments, postId, main }) => {
+const PostComments = ({ comments, postId, main, isFromDetails }) => {
   return (
     <>
-      {comments.length === 0 && (
-        <Typography sx={{ color: main, m: '0.5rem 0'}}>
+      {comments.length === 0 ? (
+        <Typography sx={{ color: main, m: '0.5rem 0' }}>
           No comments
-          <Link to={`/posts/${postId}`} style={{ color: main}}>
+          <Link to={`/posts/${postId}`} style={{ color: main }}>
             , be the first one
           </Link>
         </Typography>
+      ) : (
+        (isFromDetails ? comments : comments.slice(0, 3)).map((comment, i) => (
+          <Box key={i}>
+            {i > 0 ? <Divider /> : null}
+            <Typography sx={{ color: main, m: '0.5rem 0' }}>
+              {comment.fullName}: {comment.comment}
+            </Typography>
+          </Box>
+        ))
       )}
-      {comments.slice(0, 3).map((comment, i) => (
-        <Box key={i}>
-          {i > 0 ? <Divider /> : null}
-          <Typography sx={{ color: main, m: '0.5rem 0' }}>
-            {comment.fullName}: {comment.comment}
-          </Typography>
-        </Box>
-      ))}
     </>
   );
 };
