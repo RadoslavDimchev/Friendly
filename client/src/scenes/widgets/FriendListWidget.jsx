@@ -6,12 +6,12 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { setFriends } from 'state';
 import * as userService from 'services/userService';
+import { useIsAuth } from 'hooks/useIsAuth';
 
 const FriendListWidget = () => {
   const dispatch = useDispatch();
   const { palette } = useTheme();
-  const token = useSelector((state) => state.token);
-  const isAuth = Boolean(token);
+  const isAuth = useIsAuth();
   const user = useSelector((state) => state.user);
   const [friendsOfUsers, setFriendsOfUsers] = useState([]);
   const { userId } = useParams();

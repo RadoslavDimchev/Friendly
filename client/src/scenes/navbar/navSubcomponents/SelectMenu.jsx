@@ -1,12 +1,13 @@
 import { useTheme } from "@emotion/react";
 import { FormControl, InputBase, MenuItem, Select } from "@mui/material";
+import { useIsAuth } from "hooks/useIsAuth";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation, useNavigate } from "react-router-dom";
 import { setLogout } from "state";
 import menuItems from "./menuItems";
 
 const SelectMenu = () => {
-  const isAuth = Boolean(useSelector((state) => state.token));
+  const isAuth = useIsAuth();
   const user = useSelector((state) => state.user);
   const fullName = `${user?.firstName} ${user?.lastName}`;
   const dispatch = useDispatch();

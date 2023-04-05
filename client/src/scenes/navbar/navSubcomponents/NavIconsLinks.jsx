@@ -1,10 +1,11 @@
 import { AccountCircleOutlined } from "@mui/icons-material";
 import { IconButton, useTheme } from "@mui/material";
+import { useIsAuth } from "hooks/useIsAuth";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 const NavIconsLinks = () => {
-  const isAuth = Boolean(useSelector((state) => state.token));
+  const isAuth = useIsAuth();
   const user = useSelector((state) => state.user);
   const theme = useTheme();
   const dark = theme.palette.neutral.dark;

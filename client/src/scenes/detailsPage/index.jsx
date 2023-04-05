@@ -26,11 +26,11 @@ import * as postService from 'services/postService';
 import PostComments from 'components/PostComments';
 import DeletePostDialog from './DeletePostDialog';
 import { useNotificationContext } from 'contexts/NotificationContext';
+import { useIsAuth } from 'hooks/useIsAuth';
 
 const DetailsPage = () => {
   const navigate = useNavigate();
-  const token = useSelector((state) => state.token);
-  const isAuth = Boolean(token);
+  const isAuth = useIsAuth();
   const user = useSelector((state) => state.user);
   const [post, setPost] = useState({});
   const likeCount = Object.keys(post.likes || {}).length;

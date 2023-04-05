@@ -16,6 +16,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import * as postService from 'services/postService';
 import PostComments from 'components/PostComments';
 import { useNotificationContext } from 'contexts/NotificationContext';
+import { useIsAuth } from 'hooks/useIsAuth';
 
 const PostWidget = ({
   postId,
@@ -31,8 +32,7 @@ const PostWidget = ({
   const [isComments, setIsComments] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const token = useSelector((state) => state.token);
-  const isAuth = Boolean(token);
+  const isAuth = useIsAuth();
   const user = useSelector((state) => state.user);
   const likeCount = Object.keys(likes).length;
   const { notificationHandler } = useNotificationContext();

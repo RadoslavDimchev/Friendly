@@ -1,4 +1,5 @@
 import { Box, useMediaQuery } from "@mui/material";
+import { useIsAuth } from "hooks/useIsAuth";
 import { useSelector } from "react-redux";
 import AdvertWidget from "scenes/widgets/AdvertWidget";
 import FriendListWidget from "scenes/widgets/FriendListWidget";
@@ -9,7 +10,7 @@ import ScrollToTopButton from "./ScrollToTopButton";
 
 const HomePage = () => {
   const isNonMobileScreens = useMediaQuery("(min-width:1000px)");
-  const isAuth = Boolean(useSelector((state) => state.token));
+  const isAuth = useIsAuth();
   const user = useSelector((state) => state.user);
 
   return (

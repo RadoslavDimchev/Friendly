@@ -6,12 +6,12 @@ import { setFriends } from 'state';
 import FlexBetween from './FlexBetween';
 import UserImage from './UserImage';
 import * as userService from 'services/userService';
+import { useIsAuth } from 'hooks/useIsAuth';
 
 const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const token = useSelector((state) => state.token);
-  const isAuth = Boolean(token);
+  const isAuth = useIsAuth();
   const user = useSelector((state) => state.user);
   const isOwner = isAuth && user._id === friendId;
 
