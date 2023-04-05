@@ -48,7 +48,17 @@ const DetailsPage = () => {
     postService
       .getById(postId)
       .then((post) => setPost(post))
-      .catch((error) => console.error(error));
+      .catch((error) => {
+        console.error(error);
+        notificationHandler({
+          open: true,
+          message: 'This post does not exist',
+          severity: 'error',
+          vertical: 'bottom',
+          horizontal: 'center',
+        });
+        navigate('/');
+      });
   }, [postId]);
 
   const patchLike = async () => {
