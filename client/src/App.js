@@ -11,13 +11,12 @@ import Navbar from 'scenes/navbar';
 import DetailsPage from 'scenes/detailsPage';
 import EditPage from 'scenes/editPage';
 import Notification from 'components/Notification';
-import { useIsAuth } from 'hooks/useIsAuth';
+import NotFoundPage from 'scenes/notFoundPage/NotFoundPage';
 
 function App() {
   const mode = useSelector((state) => state.mode);
   const theme = useMemo(() => createTheme(themeSettings(mode)), [mode]);
-  const isAuth = useIsAuth();
-  
+
   return (
     <div className="app">
       <BrowserRouter>
@@ -28,7 +27,6 @@ function App() {
           <Box p="5rem 6%" pb="2rem">
             <Routes>
               <Route path="/" element={<HomePage />} />
-              {/* <Route path='/profile/:userId' element={isAuth ? <ProfilePage /> : <Navigate to="/login" />} /> */}
               <Route path="/profile/:userId" element={<ProfilePage />} />
               <Route
                 path="/profile/:userId/friends"
@@ -38,6 +36,7 @@ function App() {
               <Route path="/posts/:postId/edit" element={<EditPage />} />
               <Route path="/login" element={<AuthPage />} />
               <Route path="/register" element={<AuthPage />} />
+              <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </Box>
         </ThemeProvider>
