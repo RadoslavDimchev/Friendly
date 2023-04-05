@@ -6,21 +6,23 @@ import { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 const SearchBar = () => {
-  const [search, setSearch] = useState('');
   const theme = useTheme();
   const location = useLocation();
   const queryString = new URLSearchParams(location.search);
   const navigate = useNavigate();
+  const [search, setSearch] = useState(queryString.get('search') || '');
 
   const changeHanlder = (e) => {
-    const value = e.target.value;
-    if (!value.trim()) {
+    setSearch(e.target.value);
+  };
+
+  const onSearch = () => {
+    if (!search.trim()) {
       queryString.delete('search');
     } else {
-      queryString.set('search', value);
+      queryString.set('search', search);
     }
     navigate({ search: queryString.toString() });
-    setSearch(value);
   };
 
   return (
@@ -35,7 +37,7 @@ const SearchBar = () => {
         onChange={changeHanlder}
         placeholder="Search post..."
       />
-      <IconButton>
+      <IconButton onClick={onSearch}>
         <Search />
       </IconButton>
     </FlexBetween>

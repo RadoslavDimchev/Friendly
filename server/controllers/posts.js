@@ -44,6 +44,7 @@ const getPostsSortedByLikes = async (userId) =>
 export const getFeedPosts = async (req, res) => {
   try {
     const { userId } = req.params;
+    console.log('asjlkddsa;dlfjas');
     const { sort, search } = req.query;
 
     const props = {};
@@ -56,7 +57,6 @@ export const getFeedPosts = async (req, res) => {
       posts = await getPostsSortedByLikes(userId);
     } else {
       posts = await Post.find(props).sort({ createdAt: -1 });
-      Post.where();
     }
 
     if (search) {

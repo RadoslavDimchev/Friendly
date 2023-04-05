@@ -30,7 +30,8 @@ const PostsWidget = () => {
       try {
         const posts = await postService.getAll(
           params.userId,
-          queryString.has('sort') ? 'likes' : ''
+          queryString.has('sort') ? 'likes' : '',
+          queryString.get('search'),
         );
         dispatch(setPosts({ posts }));
       } catch (error) {
