@@ -63,7 +63,7 @@ const FriendListWidget = () => {
         )}
       </Typography>
       <Box display="flex" flexDirection="column" gap="1.5rem">
-        {friendsToMap.map(
+        {friendsToMap.length > 0 ? friendsToMap.map(
           (friend) =>
             friend._id && (
               <Friend
@@ -74,7 +74,7 @@ const FriendListWidget = () => {
                 userPicturePath={friend.picturePath}
               />
             )
-        )}
+        ) : <Typography>Looks like there are no friends here yet!</Typography>}
       </Box>
     </WidgetWrapper>
   );
