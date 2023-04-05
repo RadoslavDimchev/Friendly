@@ -20,9 +20,9 @@ const FriendListWidget = () => {
     const getFriends = async () => {
       try {
         const friends = await userService.getAllUserFriends(
-          user && !userId ? user._id : userId
+          isAuth && !userId ? user._id : userId
         );
-        if (!userId) {
+        if (isAuth && !userId) {
           dispatch(setFriends({ friends }));
         } else {
           setFriendsOfUsers(friends);
@@ -36,8 +36,10 @@ const FriendListWidget = () => {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const isUserAtHomePage = !userId && isAuth;
-  const friendsToMap = isUserAtHomePage
-    ? user.friends.slice(-3).reverse()
+  const friendsToMap = isAuth
+    ? user._id === userId
+      ? user.friends
+      : user.friends.slice(-3).reverse()
     : friendsOfUsers;
 
   return (
@@ -63,18 +65,22 @@ const FriendListWidget = () => {
         )}
       </Typography>
       <Box display="flex" flexDirection="column" gap="1.5rem">
-        {friendsToMap.length > 0 ? friendsToMap.map(
-          (friend) =>
-            friend._id && (
-              <Friend
-                key={friend._id}
-                friendId={friend._id}
-                name={`${friend.firstName} ${friend.lastName}`}
-                subtitle={friend.occupation}
-                userPicturePath={friend.picturePath}
-              />
-            )
-        ) : <Typography>Looks like there are no friends here yet!</Typography>}
+        {friendsToMap.length > 0 ? (
+          friendsToMap.map(
+            (friend) =>
+              friend._id && (
+                <Friend
+                  key={friend._id}
+                  friendId={friend._id}
+                  name={`${friend.firstName} ${friend.lastName}`}
+                  subtitle={friend.occupation}
+                  userPicturePath={friend.picturePath}
+                />
+              )
+          )
+        ) : (
+          <Typography>Looks like there are no friends here yet!</Typography>
+        )}
       </Box>
     </WidgetWrapper>
   );
