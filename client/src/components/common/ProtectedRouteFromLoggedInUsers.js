@@ -1,14 +1,14 @@
 import { useIsAuth } from 'hooks/useIsAuth';
 import { Navigate, Outlet } from 'react-router-dom';
 
-const ProtectedRouteForGuest = () => {
+const ProtectedRouteFromLoggedInUsers = () => {
   const isAuth = useIsAuth();
 
-  if (!isAuth) {
-    return <Navigate to="/login" />;
+  if (isAuth) {
+    return <Navigate to="/" />;
   }
 
   return <Outlet />;
 };
 
-export default ProtectedRouteForGuest;
+export default ProtectedRouteFromLoggedInUsers;

@@ -59,7 +59,7 @@ const DetailsPage = () => {
         });
         navigate('/');
       });
-  }, [postId]);
+  }, [postId]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const patchLike = async () => {
     if (!isAuth) {

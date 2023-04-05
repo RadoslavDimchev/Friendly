@@ -12,8 +12,8 @@ import DetailsPage from 'scenes/detailsPage';
 import EditPage from 'scenes/editPage';
 import Notification from 'components/Notification';
 import NotFoundPage from 'scenes/notFoundPage/NotFoundPage';
-import ProtectedRouteForLoggedInUsers from 'components/common/ProtectedRouteForLoggedInUser';
-import ProtectedRouteForGuest from 'components/common/ProtectedRouteForGuest';
+import ProtectedRouteForPostOwner from 'components/common/ProtectedRouteForPostOwner';
+import ProtectedRouteFromLoggedInUsers from 'components/common/ProtectedRouteFromLoggedInUsers';
 
 function App() {
   const mode = useSelector((state) => state.mode);
@@ -35,10 +35,10 @@ function App() {
                 element={<ProfilePage />}
               />
               <Route path="/posts/:postId" element={<DetailsPage />} />
-              <Route element={<ProtectedRouteForGuest />}>
+              <Route element={<ProtectedRouteForPostOwner />}>
                 <Route path="/posts/:postId/edit" element={<EditPage />} />
               </Route>
-              <Route element={<ProtectedRouteForLoggedInUsers />}>
+              <Route element={<ProtectedRouteFromLoggedInUsers />}>
                 <Route path="/login" element={<AuthPage />} />
                 <Route path="/register" element={<AuthPage />} />
               </Route>
