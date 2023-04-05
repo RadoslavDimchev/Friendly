@@ -1,9 +1,18 @@
 import { del, get, patch, post } from './requester';
 const URL = '/posts';
 
-export const getAll = async (userId, sort) => {
+export const getAll = async (userId, sort, search) => {
   const fullUrl = userId ? `${URL}/${userId}/posts` : URL;
-  const queryString = !!sort ? `?sort=${sort}` : '';
+  let queryString = '';
+
+  if (sort) {
+    queryString += `?sort=${sort}`;
+  }
+
+  if (search) {
+    queryString += queryString ? `&search=${search}` : `?search=${search}`;
+  }
+
   return get(fullUrl + queryString);
 };
 

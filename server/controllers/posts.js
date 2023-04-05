@@ -44,17 +44,26 @@ const getPostsSortedByLikes = async (userId) =>
 export const getFeedPosts = async (req, res) => {
   try {
     const { userId } = req.params;
-    const sort = req.query.sort;
+    const { sort, search } = req.query;
+
     const props = {};
-    let posts;
     if (userId) {
       props.userId = userId;
     }
 
+    let posts;
     if (sort) {
       posts = await getPostsSortedByLikes(userId);
     } else {
       posts = await Post.find(props).sort({ createdAt: -1 });
+      Post.where();
+    }
+
+    if (search) {
+      const searchRegex = new RegExp(search, "i");
+      posts = posts.filter(
+        (post) => post.description && post.description.match(searchRegex)
+      );
     }
 
     res.status(200).json(posts);

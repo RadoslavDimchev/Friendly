@@ -46,7 +46,8 @@ const PostsWidget = () => {
       queryString.set('sort', 'likes');
       navigate({ search: queryString.toString() });
     } else {
-      navigate({ search: '' });
+      queryString.delete('sort');
+      navigate({ search: queryString.toString() });
     }
     setSortedBy(e.target.value);
   };
