@@ -39,13 +39,22 @@ const Form = () => {
   }
 
   const register = async (values, onSubmitProps) => {
+    if (!values.picture) {
+      return notificationHandler({
+        open: true,
+        message: 'Picture is required',
+        severity: 'error',
+        vertical: 'top',
+        horizontal: 'center',
+      });
+    }
+
     // this allows to send form info with image
     const formData = new FormData();
     for (const value in values) {
       formData.append(value, values[value]);
     }
     formData.append('picturePath', values.picture.name);
-    onSubmitProps.resetForm();
 
     try {
       const authData = await authService.register(formData);
@@ -67,6 +76,8 @@ const Form = () => {
         vertical: 'top',
         horizontal: 'center',
       });
+    } finally {
+      onSubmitProps.resetForm();
     }
   };
 
@@ -185,10 +196,13 @@ const Form = () => {
                 />
                 <TextField
                   label="LinkedIn (not required)"
+                  onBlur={handleBlur}
                   onChange={handleChange}
                   value={values.linkedin}
                   name="linkedin"
                   sx={{ gridColumn: 'span 4' }}
+                  error={Boolean(touched.linkedin) && Boolean(errors.linkedin)}
+                  helperText={touched.linkedin && errors.linkedin}
                 />
                 <Box
                   gridColumn="span 4"
