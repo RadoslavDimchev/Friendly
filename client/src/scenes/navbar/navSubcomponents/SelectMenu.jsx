@@ -1,11 +1,13 @@
-import { useTheme } from '@emotion/react';
-import { FormControl, InputBase, MenuItem, Select } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
-import { useLocation, useNavigate } from 'react-router-dom';
-import { setLogout } from 'state';
-import menuItems from './menuItems';
+import { useTheme } from "@emotion/react";
+import { FormControl, InputBase, MenuItem, Select } from "@mui/material";
+import { useIsAuth } from "hooks/useIsAuth";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { setLogout } from "state";
+import menuItems from "./menuItems";
 
-const SelectMenu = ({ isAuth }) => {
+const SelectMenu = () => {
+  const isAuth = useIsAuth();
   const user = useSelector((state) => state.user);
   const fullName = `${user?.firstName} ${user?.lastName}`;
   const dispatch = useDispatch();
@@ -17,9 +19,9 @@ const SelectMenu = ({ isAuth }) => {
 
   const selectMenuValue = isAuth
     ? fullName
-    : pathname === '/register'
-    ? 'Register'
-    : 'Login';
+    : pathname === "/register"
+    ? "Register"
+    : "Login";
 
   return (
     <FormControl variant="standard" value={selectMenuValue}>
@@ -27,14 +29,14 @@ const SelectMenu = ({ isAuth }) => {
         value={selectMenuValue}
         sx={{
           backgroundColor: neutralLight,
-          width: '150px',
-          borderRadius: '0.25rem',
-          p: '0.25rem 1rem',
-          '& .MuiSvgIcon-root': {
-            pr: '0.25rem',
-            width: '3rem',
+          width: "150px",
+          borderRadius: "0.25rem",
+          p: "0.25rem 1rem",
+          "& .MuiSvgIcon-root": {
+            pr: "0.25rem",
+            width: "3rem",
           },
-          '& .MuiSelect-select:focus': {
+          "& .MuiSelect-select:focus": {
             backgroundColor: neutralLight,
           },
         }}
