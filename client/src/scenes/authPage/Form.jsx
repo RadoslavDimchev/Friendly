@@ -19,6 +19,8 @@ import PlacesAutocomplete from './PlacesAutocomplete';
 import { useJsApiLoader } from '@react-google-maps/api';
 import * as authService from 'services/authService';
 import { useNotificationContext } from 'contexts/NotificationContext';
+import Loading from 'components/Loading';
+import { useState } from 'react';
 
 const Form = () => {
   const { palette } = useTheme();
@@ -29,6 +31,7 @@ const Form = () => {
   const isLogin = pathname === '/login';
   const isRegister = pathname === '/register';
   const { notificationHandler } = useNotificationContext();
+  const [isLoading, setIsLoading] = useState(false);
 
   const { isLoaded, loadError } = useJsApiLoader({
     googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
@@ -55,6 +58,7 @@ const Form = () => {
       formData.append(value, values[value]);
     }
     formData.append('picturePath', values.picture.name);
+    setIsLoading(true);
 
     try {
       const authData = await authService.register(formData);
@@ -78,10 +82,13 @@ const Form = () => {
       });
     } finally {
       onSubmitProps.resetForm();
+      setIsLoading(false);
     }
   };
 
   const login = async (values, onSubmitProps) => {
+    setIsLoading(true);
+
     try {
       const authData = await authService.login({
         email: values.email,
@@ -108,6 +115,7 @@ const Form = () => {
       });
     } finally {
       onSubmitProps.resetForm();
+      setIsLoading(false);
     }
   };
 
@@ -263,39 +271,43 @@ const Form = () => {
           </Box>
 
           {/* BUTTONS */}
-          <Box>
-            <Button
-              fullWidth
-              type="submit"
-              sx={{
-                m: '2rem 0',
-                p: '1rem',
-                backgroundColor: palette.primary.main,
-                color: palette.background.alt,
-                '&:hover': { color: palette.primary.main },
-              }}
-            >
-              {isLogin ? 'LOGIN' : 'REGISTER'}
-            </Button>
-            <Typography
-              onClick={() => {
-                navigate(isLogin ? '/register' : '/login');
-                resetForm();
-              }}
-              sx={{
-                textDecoration: 'underlined',
-                color: palette.primary.main,
-                '&:hover': {
-                  cursor: 'pointer',
-                  color: palette.primary.light,
-                },
-              }}
-            >
-              {isLogin
-                ? "Don't have an account? Sign Up here."
-                : 'Already have an account? Login here.'}
-            </Typography>
-          </Box>
+          {isLoading ? (
+            <Loading />
+          ) : (
+            <Box>
+              <Button
+                fullWidth
+                type="submit"
+                sx={{
+                  m: '2rem 0',
+                  p: '1rem',
+                  backgroundColor: palette.primary.main,
+                  color: palette.background.alt,
+                  '&:hover': { color: palette.primary.main },
+                }}
+              >
+                {isLogin ? 'LOGIN' : 'REGISTER'}
+              </Button>
+              <Typography
+                onClick={() => {
+                  navigate(isLogin ? '/register' : '/login');
+                  resetForm();
+                }}
+                sx={{
+                  textDecoration: 'underlined',
+                  color: palette.primary.main,
+                  '&:hover': {
+                    cursor: 'pointer',
+                    color: palette.primary.light,
+                  },
+                }}
+              >
+                {isLogin
+                  ? "Don't have an account? Sign Up here."
+                  : 'Already have an account? Login here.'}
+              </Typography>
+            </Box>
+          )}
         </form>
       )}
     </Formik>

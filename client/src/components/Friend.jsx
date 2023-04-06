@@ -32,9 +32,9 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
     if (!isAuth) {
       return navigate('/login');
     }
+    setIsLoading(true);
 
     try {
-      setIsLoading(true);
       const data = await userService.patchFriend(user._id, friendId);
       dispatch(setFriends({ friends: data }));
     } catch (error) {
