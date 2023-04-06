@@ -1,5 +1,11 @@
 import { PersonAddOutlined, PersonRemoveOutlined } from '@mui/icons-material';
-import { Box, useTheme, Typography, IconButton } from '@mui/material';
+import {
+  Box,
+  useTheme,
+  Typography,
+  IconButton,
+  CircularProgress,
+} from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setFriends } from 'state';
@@ -7,6 +13,7 @@ import FlexBetween from './FlexBetween';
 import UserImage from './UserImage';
 import * as userService from 'services/userService';
 import { useIsAuth } from 'hooks/useIsAuth';
+import { useState } from 'react';
 
 const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const dispatch = useDispatch();
@@ -14,6 +21,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const isAuth = useIsAuth();
   const user = useSelector((state) => state.user);
   const isOwner = isAuth && user._id === friendId;
+  const [isLoading, setIsLoading] = useState(false);
 
   const { palette } = useTheme();
   const primaryLight = palette.primary.light;
@@ -31,10 +39,13 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
     }
 
     try {
+      setIsLoading(true);
       const data = await userService.patchFriend(user._id, friendId);
       dispatch(setFriends({ friends: data }));
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -65,7 +76,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
           </Typography>
         </Box>
       </FlexBetween>
-      {!isOwner && (
+      {!isOwner && !isLoading && (
         <IconButton
           onClick={patchFriend}
           sx={{ backgroundColor: primaryLight, p: '0.6rem' }}
@@ -77,6 +88,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
           )}
         </IconButton>
       )}
+      {isLoading && <CircularProgress />}
     </FlexBetween>
   );
 };
