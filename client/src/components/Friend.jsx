@@ -1,11 +1,5 @@
 import { PersonAddOutlined, PersonRemoveOutlined } from '@mui/icons-material';
-import {
-  Box,
-  useTheme,
-  Typography,
-  IconButton,
-  CircularProgress,
-} from '@mui/material';
+import { Box, useTheme, Typography, IconButton } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { setFriends } from 'state';
@@ -14,6 +8,7 @@ import UserImage from './UserImage';
 import * as userService from 'services/userService';
 import { useIsAuth } from 'hooks/useIsAuth';
 import { useState } from 'react';
+import Loading from './Loading';
 
 const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
   const dispatch = useDispatch();
@@ -88,7 +83,7 @@ const Friend = ({ friendId, name, subtitle, userPicturePath }) => {
           )}
         </IconButton>
       )}
-      {isLoading && <CircularProgress />}
+      {isLoading && <Loading />}
     </FlexBetween>
   );
 };
