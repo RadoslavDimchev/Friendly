@@ -82,8 +82,6 @@ const Form = () => {
   };
 
   const login = async (values, onSubmitProps) => {
-    onSubmitProps.resetForm();
-
     try {
       const authData = await authService.login({
         email: values.email,
@@ -108,6 +106,8 @@ const Form = () => {
         vertical: 'top',
         horizontal: 'center',
       });
+    } finally {
+      onSubmitProps.resetForm();
     }
   };
 
