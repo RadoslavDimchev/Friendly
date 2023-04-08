@@ -13,7 +13,8 @@ const ProtectedRouteForPostOwner = () => {
   }
 
   const post = posts.find((p) => p._id === postId);
-  const isOwner = post._id === user._id;
+  const isOwner = post.userId === user._id;
+
   if (!isOwner) {
     return <Navigate to="/" />;
   }
