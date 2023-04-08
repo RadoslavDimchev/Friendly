@@ -13,6 +13,7 @@ import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { setPosts } from 'state';
 import PostWidget from './PostWidget';
 import * as postService from 'services/postService';
+import Loading from 'components/Loading';
 
 const PostsWidget = () => {
   const dispatch = useDispatch();
@@ -22,20 +23,24 @@ const PostsWidget = () => {
   const params = useParams();
   const queryString = new URLSearchParams(location.search);
   const [sortedBy, setSortedBy] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     setSortedBy(queryString.get('sort') || 'recent');
 
     const getPosts = async () => {
+      setIsLoading(true);
       try {
         const posts = await postService.getAll(
           params.userId,
           queryString.has('sort') ? 'likes' : '',
-          queryString.get('search'),
+          queryString.get('search')
         );
         dispatch(setPosts({ posts }));
       } catch (error) {
         console.error(error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -55,47 +60,53 @@ const PostsWidget = () => {
 
   return (
     <>
-      <Stack
-        direction="row"
-        justifyContent="space-between"
-        alignItems="center"
-        spacing={2}
-        sx={{ mb: '0.5rem' }}
-      >
-        <Divider sx={{ width: '80%' }} />
-        <FormControl variant="standard">
-          <InputLabel id="demo-simple-select-standard-label">
-            Sort by:
-          </InputLabel>
-          <Select
-            labelId="demo-simple-select-standard-label"
-            id="demo-simple-select-standard"
-            value={sortedBy}
-            onChange={changeSortHandler}
-          >
-            <MenuItem value="recent">Recent</MenuItem>
-            <MenuItem value="likes">Likes</MenuItem>
-          </Select>
-        </FormControl>
-      </Stack>
-
-      {posts.length === 0 ? (
-        <Typography>Looks like there are no posts here yet!</Typography>
+      {isLoading ? (
+        <Loading />
       ) : (
-        posts.map((post) => (
-          <PostWidget
-            key={post._id}
-            postId={post._id}
-            postUserId={post.userId}
-            name={`${post.firstName} ${post.lastName}`}
-            description={post.description}
-            picturePath={post.picturePath}
-            userPicturePath={post.userPicturePath}
-            likes={post.likes}
-            comments={post.comments}
-            occupation={post.occupation}
-          />
-        ))
+        <>
+          <Stack
+            direction="row"
+            justifyContent="space-between"
+            alignItems="center"
+            spacing={2}
+            sx={{ mb: '0.5rem' }}
+          >
+            <Divider sx={{ width: '80%' }} />
+            <FormControl variant="standard">
+              <InputLabel id="demo-simple-select-standard-label">
+                Sort by:
+              </InputLabel>
+              <Select
+                labelId="demo-simple-select-standard-label"
+                id="demo-simple-select-standard"
+                value={sortedBy}
+                onChange={changeSortHandler}
+              >
+                <MenuItem value="recent">Recent</MenuItem>
+                <MenuItem value="likes">Likes</MenuItem>
+              </Select>
+            </FormControl>
+          </Stack>
+
+          {posts.length === 0 ? (
+            <Typography>Looks like there are no posts here yet!</Typography>
+          ) : (
+            posts.map((post) => (
+              <PostWidget
+                key={post._id}
+                postId={post._id}
+                postUserId={post.userId}
+                name={`${post.firstName} ${post.lastName}`}
+                description={post.description}
+                picturePath={post.picturePath}
+                userPicturePath={post.userPicturePath}
+                likes={post.likes}
+                comments={post.comments}
+                occupation={post.occupation}
+              />
+            ))
+          )}
+        </>
       )}
     </>
   );

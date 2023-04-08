@@ -1,4 +1,5 @@
 import { Box, useMediaQuery } from '@mui/material';
+import Loading from 'components/Loading';
 import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import FriendListWidget from 'scenes/widgets/FriendListWidget';
@@ -12,14 +13,18 @@ const ProfilePage = () => {
   const { userId } = useParams();
   const isNonMobileScreens = useMediaQuery('(min-width:1000px)');
   const { pathname } = useLocation();
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const getUser = async () => {
+      setIsLoading(true);
       try {
         const data = await userService.getById(userId);
         setUser(data);
       } catch (error) {
         console.error(error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -38,16 +43,26 @@ const ProfilePage = () => {
       gap="2rem"
       justifyContent="center"
     >
-      <Box flexBasis={isNonMobileScreens ? '26%' : undefined}>
-        <UserWidget user={user} />
-        <GoogleMapsWidget user={user} />
-      </Box>
-      <Box
-        flexBasis={isNonMobileScreens ? '42%' : undefined}
-        mt={isNonMobileScreens ? undefined : '2rem'}
-      >
-        {pathname.includes('friends') ? <FriendListWidget /> : <PostsWidget />}
-      </Box>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <>
+          <Box flexBasis={isNonMobileScreens ? '26%' : undefined}>
+            <UserWidget user={user} />
+            <GoogleMapsWidget user={user} />
+          </Box>
+          <Box
+            flexBasis={isNonMobileScreens ? '42%' : undefined}
+            mt={isNonMobileScreens ? undefined : '2rem'}
+          >
+            {pathname.includes('friends') ? (
+              <FriendListWidget />
+            ) : (
+              <PostsWidget />
+            )}
+          </Box>
+        </>
+      )}
     </Box>
   );
 };
