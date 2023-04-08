@@ -58,8 +58,6 @@ const Form = () => {
       formData.append(value, values[value]);
     }
     formData.append('picturePath', values.picture.name);
-    setIsLoading(true);
-
     try {
       const authData = await authService.register(formData);
       if (authData) {
@@ -82,13 +80,10 @@ const Form = () => {
       });
     } finally {
       onSubmitProps.resetForm();
-      setIsLoading(false);
     }
   };
 
   const login = async (values, onSubmitProps) => {
-    setIsLoading(true);
-
     try {
       const authData = await authService.login({
         email: values.email,
@@ -115,11 +110,12 @@ const Form = () => {
       });
     } finally {
       onSubmitProps.resetForm();
-      setIsLoading(false);
     }
   };
 
   const handleFormSubmit = async (values, onSubmitProps) => {
+    setIsLoading(true);
+
     try {
       if (isLogin) {
         await login(values, onSubmitProps);
@@ -128,6 +124,8 @@ const Form = () => {
       }
     } catch (error) {
       console.error(error);
+    } finally {
+      setIsLoading(false);
     }
   };
 
