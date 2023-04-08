@@ -13,19 +13,22 @@ const FriendListWidget = () => {
   const { palette } = useTheme();
   const isAuth = useIsAuth();
   const user = useSelector((state) => state.user);
-  const [friendsOfUsers, setFriendsOfUsers] = useState([]);
+  const [friendsOfUser, setFriendsOfUser] = useState([]);
   const { userId } = useParams();
+  const isUserAtHomePage = isAuth && !userId;
 
   useEffect(() => {
     const getFriends = async () => {
       try {
         const friends = await userService.getAllUserFriends(
-          isAuth && !userId ? user._id : userId
+          isUserAtHomePage ? user._id : userId
         );
-        if (isAuth && !userId) {
+
+        if (isUserAtHomePage) {
           dispatch(setFriends({ friends }));
+          setFriendsOfUser(friends.slice(-3).reverse());
         } else {
-          setFriendsOfUsers(friends);
+          setFriendsOfUser(friends);
         }
       } catch (error) {
         console.error(error);
@@ -33,14 +36,7 @@ const FriendListWidget = () => {
     };
 
     getFriends();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-  const isUserAtHomePage = !userId && isAuth;
-  const friendsToMap = isAuth
-    ? user._id === userId
-      ? user.friends
-      : user.friends.slice(-3).reverse()
-    : friendsOfUsers;
+  }, [user?.friends?.length]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <WidgetWrapper>
@@ -65,8 +61,8 @@ const FriendListWidget = () => {
         )}
       </Typography>
       <Box display="flex" flexDirection="column" gap="1.5rem">
-        {friendsToMap.length > 0 ? (
-          friendsToMap.map(
+        {friendsOfUser.length > 0 ? (
+          friendsOfUser.map(
             (friend) =>
               friend._id && (
                 <Friend
