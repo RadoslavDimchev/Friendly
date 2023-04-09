@@ -12,7 +12,7 @@ The app is based on MERN stack `MongoDB + Express.js + Node.js + React.js`
 
 Used libraries
 
-- server `nodemon, bcrypt, body-parser, cors, dotenv,express,gridfs-stream, helmet, jsonwebtoken, mongoose, morgan, multer ,multer-gridfs-storage`
+- server `nodemon, bcrypt, body-parser, cors, dotenv,express,gridfs-stream, helmet, jsonwebtoken, mongoose, morgan, multer, multer-gridfs-storage`
 - client `mui, dotenv, formik, yup react-dropzone, react-redux, redux-persist, @reduxjs/toolkit, @react-google-maps/api, use-places-autocomplete`
 
 ## Usage
@@ -37,13 +37,14 @@ Used libraries
 - tooltips
 - loaders
 - modals
+- scroll to top
 - not found page
 - validation
 - prettier config for formatting code
 
 ## User
 
-### Logged out!
+### Logged out
 
 - view posts
 - view post detais
@@ -71,9 +72,9 @@ One post has userId that is id ot it's owner, likes which is Map (userId for key
 
 ## Screenshots
 
-![Screenshot (353)](https://user-images.githubusercontent.com/101931596/230756790-01999961-b4e7-47bb-9696-bf1907966fb5.png)
-![Screenshot (354)](https://user-images.githubusercontent.com/101931596/230756792-aaec959a-79eb-478d-984e-e974efc42c42.png)
-![Screenshot (355)](https://user-images.githubusercontent.com/101931596/230756793-1f553f0c-88b2-4fdb-932f-e475a537795c.png)
-![Screenshot (356)](https://user-images.githubusercontent.com/101931596/230756794-fb179bf2-cc5a-4695-905a-a85c58a34239.png)
-![Screenshot (357)](https://user-images.githubusercontent.com/101931596/230756797-1ffbdf3c-e59b-49c1-957b-24d429d4cf6f.png)
-![Screenshot (358)](https://user-images.githubusercontent.com/101931596/230756787-745cc51b-28cd-426d-94c3-1c0236c03f8f.png)
+![Home Page)](https://user-images.githubusercontent.com/101931596/230756790-01999961-b4e7-47bb-9696-bf1907966fb5.png)
+![Home Pade (dark mode)](https://user-images.githubusercontent.com/101931596/230756792-aaec959a-79eb-478d-984e-e974efc42c42.png)
+![On Mobile device](https://user-images.githubusercontent.com/101931596/230756793-1f553f0c-88b2-4fdb-932f-e475a537795c.png)
+![Details with author menu)](https://user-images.githubusercontent.com/101931596/230756794-fb179bf2-cc5a-4695-905a-a85c58a34239.png)
+![Profile Page](https://user-images.githubusercontent.com/101931596/230756797-1ffbdf3c-e59b-49c1-957b-24d429d4cf6f.png)
+![Friends of user](https://user-images.githubusercontent.com/101931596/230756787-745cc51b-28cd-426d-94c3-1c0236c03f8f.png)
