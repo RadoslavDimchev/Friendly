@@ -19,7 +19,7 @@ Used libraries
 - client `cd client` `npm i` `npm start`
 
 - email - dimchev@gmail.com
-- password - dimchev123
+- password - 12345678
 
 ## Features
 
@@ -31,7 +31,8 @@ Used libraries
 
 ## User
 
-### Logged out
+### Logged out!
+
 
 - view posts
 - view post detais
@@ -47,6 +48,7 @@ Used libraries
 - make and remove friends
 
 ## Architecture
+[DB diagram](https://user-images.githubusercontent.com/101931596/230755631-e2b8d6b3-9e4b-4b74-b247-91a172c0e875.png)
 
 ### User
 - firstName: String
